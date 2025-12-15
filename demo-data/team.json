@@ -1,0 +1,44 @@
+[
+    {
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop",
+        "title": "John Mitchell",
+        "subtitle": "CEO & Founder",
+        "description": "John brings over 20 years of industry experience and a passion for innovation that drives our company forward.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=300&fit=crop",
+        "title": "Sarah Chen",
+        "subtitle": "Chief Technology Officer",
+        "description": "Sarah leads our engineering team with expertise in cloud architecture and scalable systems.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
+        "title": "Michael Rodriguez",
+        "subtitle": "Head of Design",
+        "description": "Michael creates beautiful user experiences that delight our customers and set us apart.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop",
+        "title": "Emily Watson",
+        "subtitle": "Marketing Director",
+        "description": "Emily drives our brand strategy and has doubled our market presence in just two years.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=300&fit=crop",
+        "title": "David Kim",
+        "subtitle": "Lead Developer",
+        "description": "David is a full-stack wizard who turns complex requirements into elegant solutions.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=300&fit=crop",
+        "title": "Lisa Thompson",
+        "subtitle": "Customer Success Manager",
+        "description": "Lisa ensures our clients achieve their goals and maintains our industry-leading satisfaction scores.",
+        "link": "#"
+    }
+]

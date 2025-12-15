@@ -1,0 +1,44 @@
+[
+    {
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
+        "title": "E-Commerce Dashboard",
+        "subtitle": "Web Design • Development",
+        "description": "A comprehensive analytics dashboard for tracking sales, inventory, and customer engagement.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+        "title": "Mobile Banking App",
+        "subtitle": "UI/UX • Mobile",
+        "description": "Redesigned mobile banking experience with focus on security and ease of use.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=400&h=300&fit=crop",
+        "title": "Brand Identity System",
+        "subtitle": "Branding • Logo Design",
+        "description": "Complete brand identity including logo, color palette, typography, and brand guidelines.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1517292987719-0369a794ec0f?w=400&h=300&fit=crop",
+        "title": "SaaS Landing Page",
+        "subtitle": "Web Design • Conversion",
+        "description": "High-converting landing page design that increased signups by 40%.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
+        "title": "Fitness Tracking App",
+        "subtitle": "Mobile • Health Tech",
+        "description": "Gamified fitness app with social features that keeps users motivated and engaged.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&h=300&fit=crop",
+        "title": "Real Estate Platform",
+        "subtitle": "Full Stack • Maps",
+        "description": "Property listing platform with interactive maps and virtual tour integration.",
+        "link": "#"
+    }
+]

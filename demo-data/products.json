@@ -1,0 +1,44 @@
+[
+    {
+        "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+        "title": "Premium Wireless Headphones",
+        "subtitle": "$299.99",
+        "description": "Experience crystal-clear audio with our flagship noise-canceling headphones. 30-hour battery life.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
+        "title": "Smart Watch Pro",
+        "subtitle": "$449.99",
+        "description": "Track your fitness, manage notifications, and stay connected with our most advanced smartwatch.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop",
+        "title": "Vintage Camera",
+        "subtitle": "$189.99",
+        "description": "Capture memories in style with this beautifully crafted instant camera. Includes 10 film sheets.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
+        "title": "Running Shoes",
+        "subtitle": "$129.99",
+        "description": "Engineered for performance with responsive cushioning and breathable mesh upper.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&h=300&fit=crop",
+        "title": "Skincare Set",
+        "subtitle": "$79.99",
+        "description": "Complete daily skincare routine with cleanser, toner, serum, and moisturizer.",
+        "link": "#"
+    },
+    {
+        "image": "https://images.unsplash.com/photo-1491553895911-0055uj29d0d?w=400&h=300&fit=crop",
+        "title": "Leather Backpack",
+        "subtitle": "$199.99",
+        "description": "Handcrafted genuine leather backpack with laptop compartment. Built to last a lifetime.",
+        "link": "#"
+    }
+]
