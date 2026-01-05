@@ -1,9 +1,9 @@
 === CardCrafter – JSON to Card Layouts ===
 Contributors: fahdm
-Tags: cards, json, api, grid, team, portfolio
+Tags: cards, json, api, grid, team
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 1.1.0
+Tested up to: 6.9
+Stable tag: 1.1.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -50,10 +50,10 @@ Whether you're building a team directory, product showcase, or portfolio gallery
 == Usage ==
 
 **Basic Shortcode:**
-`[cardcrafter source="https://example.com/team.json"]`
+`[cardcrafter-wp-grid-layouts source="https://example.com/team.json"]`
 
 **With Options:**
-`[cardcrafter source="https://example.com/products.json" layout="masonry" columns="4"]`
+`[cardcrafter-wp-grid-layouts source="https://example.com/products.json" layout="masonry" columns="4"]`
 
 **Shortcode Attributes:**
 *   `source` (required) - URL of your JSON data
@@ -83,6 +83,12 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 3. **Masonry Layout** - Pinterest-style masonry layout for varied content heights.
 
 == Changelog ==
+
+= 1.1.2 =
+* Security: Implemented `wp_unslash` and proper sanitization orders for all input processing.
+* Compliance: Renamed text-domain and slug to `cardcrafter-wp-grid-layouts` to avoid restricted terms.
+* Compatibility: Upgraded to `wp_parse_url` and verified testing up to WordPress 6.9.
+* Maintenance: Optimized tags and metadata for official directory submission.
 
 = 1.1.0 =
 * Feature: Added "Secure Data Proxy" - fetch data from any API regardless of CORS settings.

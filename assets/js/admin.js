@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const url = urlInput.value.trim() || 'URL';
         const layout = layoutSelect.value;
         const columns = columnsSelect.value;
-        shortcodeDisplay.innerText = `[cardcrafter source="${url}" layout="${layout}" columns="${columns}"]`;
+        shortcodeDisplay.innerText = `[cardcrafter-wp-grid-layouts source="${url}" layout="${layout}" columns="${columns}"]`;
     }
 
     urlInput.addEventListener('input', updateShortcode);
