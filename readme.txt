@@ -1,6 +1,6 @@
 === CardCrafter – Data-Driven Card Grids ===
 Contributors: fahdi
-Tags: json, cards, layouts, grid, portfolio, team, showcase, data-driven, card-grids
+Tags: json, cards, grid, portfolio, team
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -10,10 +10,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
 
+== Description ==
+
 Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / cardcrafter-data-grids. 
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
-
-== Description ==
 
 **CardCrafter** transforms any JSON data source into stunning, responsive card layouts with zero coding required.
 

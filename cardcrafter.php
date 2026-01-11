@@ -7,7 +7,7 @@
  * Author: fahdi
  * Author URI: https://github.com/fahdi
  * License: GPLv2 or later
- * Text Domain: cardcrafter
+ * Text Domain: cardcrafter-data-grids
  * Domain Path: /languages
  */
 
@@ -69,8 +69,8 @@ class CardCrafter
     public function add_admin_menu()
     {
         add_menu_page(
-            __('CardCrafter', 'cardcrafter'),
-            __('CardCrafter', 'cardcrafter'),
+            __('CardCrafter', 'cardcrafter-data-grids'),
+            __('CardCrafter', 'cardcrafter-data-grids'),
             'manage_options',
             'cardcrafter',
             array($this, 'render_admin_page'),
@@ -93,8 +93,8 @@ class CardCrafter
         $portfolio_url = CARDCRAFTER_URL . 'demo-data/portfolio.json';
         ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline"><?php esc_html_e('CardCrafter', 'cardcrafter'); ?></h1>
-            <p><?php esc_html_e('Transform JSON data into beautiful card layouts.', 'cardcrafter'); ?></p>
+            <h1 class="wp-heading-inline"><?php esc_html_e('CardCrafter', 'cardcrafter-data-grids'); ?></h1>
+            <p><?php esc_html_e('Transform JSON data into beautiful card layouts.', 'cardcrafter-data-grids'); ?></p>
             <hr class="wp-header-end">
 
             <div class="cardcrafter-admin-layout" style="display: flex; gap: 20px; margin-top: 20px; align-items: flex-start;">
@@ -103,30 +103,30 @@ class CardCrafter
                 <div class="cardcrafter-sidebar" style="flex: 0 0 350px;">
                     <!-- Configuration Card -->
                     <div class="card" style="margin: 0 0 20px 0; max-width: none;">
-                        <h2><?php esc_html_e('Settings', 'cardcrafter'); ?></h2>
+                        <h2><?php esc_html_e('Settings', 'cardcrafter-data-grids'); ?></h2>
                         <div style="margin-bottom: 15px;">
                             <label for="cardcrafter-preview-url"
-                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Data Source URL', 'cardcrafter'); ?></label>
+                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Data Source URL', 'cardcrafter-data-grids'); ?></label>
                             <input type="text" id="cardcrafter-preview-url" class="widefat"
                                 placeholder="https://api.example.com/data.json">
                             <p class="description">
-                                <?php esc_html_e('Must be a publicly accessible JSON endpoint.', 'cardcrafter'); ?>
+                                <?php esc_html_e('Must be a publicly accessible JSON endpoint.', 'cardcrafter-data-grids'); ?>
                             </p>
                         </div>
 
                         <div style="margin-bottom: 15px;">
                             <label for="cardcrafter-layout"
-                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Layout Style', 'cardcrafter'); ?></label>
+                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Layout Style', 'cardcrafter-data-grids'); ?></label>
                             <select id="cardcrafter-layout" class="widefat">
-                                <option value="grid"><?php esc_html_e('Grid (Default)', 'cardcrafter'); ?></option>
-                                <option value="masonry"><?php esc_html_e('Masonry', 'cardcrafter'); ?></option>
-                                <option value="list"><?php esc_html_e('List View', 'cardcrafter'); ?></option>
+                                <option value="grid"><?php esc_html_e('Grid (Default)', 'cardcrafter-data-grids'); ?></option>
+                                <option value="masonry"><?php esc_html_e('Masonry', 'cardcrafter-data-grids'); ?></option>
+                                <option value="list"><?php esc_html_e('List View', 'cardcrafter-data-grids'); ?></option>
                             </select>
                         </div>
 
                         <div style="margin-bottom: 15px;">
                             <label for="cardcrafter-columns"
-                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Columns', 'cardcrafter'); ?></label>
+                                style="font-weight: 600; display: block; margin-bottom: 5px;"><?php esc_html_e('Columns', 'cardcrafter-data-grids'); ?></label>
                             <select id="cardcrafter-columns" class="widefat">
                                 <option value="2">2</option>
                                 <option value="3" selected>3</option>
@@ -136,34 +136,34 @@ class CardCrafter
 
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <button id="cardcrafter-preview-btn" class="button button-primary button-large"
-                                style="flex: 1;"><?php esc_html_e('Preview Cards', 'cardcrafter'); ?></button>
+                                style="flex: 1;"><?php esc_html_e('Preview Cards', 'cardcrafter-data-grids'); ?></button>
                         </div>
                     </div>
 
                     <!-- Usage info -->
                     <div class="card" style="margin: 0 0 20px 0; max-width: none;">
-                        <h2><?php esc_html_e('Usage', 'cardcrafter'); ?></h2>
-                        <p><?php esc_html_e('Copy the shortcode below to use these cards:', 'cardcrafter'); ?></p>
+                        <h2><?php esc_html_e('Usage', 'cardcrafter-data-grids'); ?></h2>
+                        <p><?php esc_html_e('Copy the shortcode below to use these cards:', 'cardcrafter-data-grids'); ?></p>
                         <code id="cardcrafter-shortcode-display"
                             style="display: block; padding: 10px; background: #f0f0f1; margin: 10px 0; font-size: 12px; word-break: break-all;">[cardcrafter-data-grids source="..."]</code>
                         <button id="cardcrafter-copy-shortcode" class="button button-secondary"
-                            style="width: 100%;"><?php esc_html_e('Copy Shortcode', 'cardcrafter'); ?></button>
+                            style="width: 100%;"><?php esc_html_e('Copy Shortcode', 'cardcrafter-data-grids'); ?></button>
                     </div>
 
                     <!-- Demos -->
                     <div class="card" style="margin: 0; max-width: none;">
-                        <h2><?php esc_html_e('Quick Demos', 'cardcrafter'); ?></h2>
-                        <p><?php esc_html_e('Click a dataset to load:', 'cardcrafter'); ?></p>
+                        <h2><?php esc_html_e('Quick Demos', 'cardcrafter-data-grids'); ?></h2>
+                        <p><?php esc_html_e('Click a dataset to load:', 'cardcrafter-data-grids'); ?></p>
                         <ul class="cardcrafter-demo-links" style="margin: 0;">
                             <li style="margin-bottom: 8px;"><a href="#" class="button" style="width: 100%; text-align: left;"
                                     data-url="<?php echo esc_url($team_url); ?>">👥
-                                    <?php esc_html_e('Team Directory', 'cardcrafter'); ?></a></li>
+                                    <?php esc_html_e('Team Directory', 'cardcrafter-data-grids'); ?></a></li>
                             <li style="margin-bottom: 8px;"><a href="#" class="button" style="width: 100%; text-align: left;"
                                     data-url="<?php echo esc_url($products_url); ?>">🛍️
-                                    <?php esc_html_e('Product Showcase', 'cardcrafter'); ?></a></li>
+                                    <?php esc_html_e('Product Showcase', 'cardcrafter-data-grids'); ?></a></li>
                             <li style="margin-bottom: 0;"><a href="#" class="button" style="width: 100%; text-align: left;"
                                     data-url="<?php echo esc_url($portfolio_url); ?>">🎨
-                                    <?php esc_html_e('Portfolio Gallery', 'cardcrafter'); ?></a></li>
+                                    <?php esc_html_e('Portfolio Gallery', 'cardcrafter-data-grids'); ?></a></li>
                         </ul>
                     </div>
                 </div>
@@ -173,7 +173,7 @@ class CardCrafter
                     <div class="card"
                         style="margin: 0; max-width: none; min-height: 500px; display: flex; flex-direction: column;">
                         <h2 style="border-bottom: 1px solid #f0f0f1; padding-bottom: 15px; margin-bottom: 15px; margin-top: 0;">
-                            <?php esc_html_e('Live Preview', 'cardcrafter'); ?>
+                            <?php esc_html_e('Live Preview', 'cardcrafter-data-grids'); ?>
                         </h2>
 
                         <div id="cardcrafter-preview-wrap"
@@ -183,7 +183,7 @@ class CardCrafter
                                 <div style="text-align: center;">
                                     <span class="dashicons dashicons-grid-view"
                                         style="font-size: 48px; width: 48px; height: 48px; color: #ddd;"></span>
-                                    <p><?php esc_html_e('Select a demo or enter a URL to generate cards.', 'cardcrafter'); ?>
+                                    <p><?php esc_html_e('Select a demo or enter a URL to generate cards.', 'cardcrafter-data-grids'); ?>
                                     </p>
                                 </div>
                             </div>
@@ -221,11 +221,11 @@ class CardCrafter
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('cardcrafter_proxy_nonce'),
             'i18n' => array(
-                'validUrl' => __('Please enter a valid URL', 'cardcrafter'),
-                'loading' => __('Loading cards...', 'cardcrafter'),
-                'libNotLoaded' => __('CardCrafter library not loaded.', 'cardcrafter'),
-                'copyFailed' => __('Failed to copy to clipboard. Please copy manually.', 'cardcrafter'),
-                'copied' => __('Copied!', 'cardcrafter')
+                'validUrl' => __('Please enter a valid URL', 'cardcrafter-data-grids'),
+                'loading' => __('Loading cards...', 'cardcrafter-data-grids'),
+                'libNotLoaded' => __('CardCrafter library not loaded.', 'cardcrafter-data-grids'),
+                'copyFailed' => __('Failed to copy to clipboard. Please copy manually.', 'cardcrafter-data-grids'),
+                'copied' => __('Copied!', 'cardcrafter-data-grids')
             )
         ));
 
@@ -265,7 +265,7 @@ class CardCrafter
             'subtitle_field' => 'subtitle',
             'description_field' => 'description',
             'link_field' => 'link'
-        ), $atts, 'cardcrafter');
+        ), $atts, 'cardcrafter-data-grids');
 
         // Sanitize inputs
         $atts['source'] = esc_url_raw($atts['source']);
@@ -273,7 +273,7 @@ class CardCrafter
         $atts['columns'] = absint($atts['columns']);
 
         if (empty($atts['source'])) {
-            return '<p>' . esc_html__('Error: CardCrafter requires a "source" attribute.', 'cardcrafter') . '</p>';
+            return '<p>' . esc_html__('Error: CardCrafter requires a "source" attribute.', 'cardcrafter-data-grids') . '</p>';
         }
 
         // Try Cache First (SWR pattern)
@@ -304,7 +304,7 @@ class CardCrafter
             data-config='<?php echo esc_attr(wp_json_encode($config)); ?>'>
             <div class="cardcrafter-loading">
                 <div class="cardcrafter-spinner"></div>
-                <p><?php esc_html_e('Loading CardCrafter...', 'cardcrafter'); ?></p>
+                <p><?php esc_html_e('Loading CardCrafter...', 'cardcrafter-data-grids'); ?></p>
             </div>
         </div>
         <?php
