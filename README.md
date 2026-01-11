@@ -4,7 +4,7 @@
 **Tags:** cards, json, api, grid, team, portfolio  
 **Requires at least:** 5.0  
 **Tested up to:** 6.9  
-**Stable tag:** 1.1.1  
+**Stable tag:** 1.1.3  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -100,7 +100,7 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 
 ## Changelog
 
-### 1.1.1
+### 1.1.3
 *   Refactor: Updated all function prefixes to `cardcrafter_` for compliance.
 *   Security: Implemented `wp_unslash` and proper sanitization orders for all input processing.
 *   Compliance: Renamed text-domain and slug to `cardcrafter-data-grids` to avoid restricted terms.
