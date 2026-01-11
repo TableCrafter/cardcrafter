@@ -1,14 +1,17 @@
-=== CardCrafter – JSON to Card Layouts ===
-Contributors: fahdm
-Tags: cards, json, api, grid, team
-Requires at least: 5.0
+=== CardCrafter – Data-Driven Card Grids ===
+Contributors: fahdi
+Tags: json, cards, layouts, grid, portfolio, team, showcase, data-driven, card-grids
+Requires at least: 6.0
 Tested up to: 6.9
-Stable tag: 1.1.3
 Requires PHP: 7.4
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Transform JSON data into beautiful, responsive card grids. Perfect for team pages, product showcases, and portfolios.
+Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
+
+Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / cardcrafter-data-grids. 
+All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 
 == Description ==
 
@@ -50,10 +53,10 @@ Whether you're building a team directory, product showcase, or portfolio gallery
 == Usage ==
 
 **Basic Shortcode:**
-`[cardcrafter-wp-grid-layouts source="https://example.com/team.json"]`
+`[cardcrafter-data-grids source="https://example.com/team.json"]`
 
 **With Options:**
-`[cardcrafter-wp-grid-layouts source="https://example.com/products.json" layout="masonry" columns="4"]`
+`[cardcrafter-data-grids source="https://example.com/products.json" layout="masonry" columns="4"]`
 
 **Shortcode Attributes:**
 *   `source` (required) - URL of your JSON data
@@ -86,7 +89,7 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 
 = 1.1.2 =
 * Security: Implemented `wp_unslash` and proper sanitization orders for all input processing.
-* Compliance: Renamed text-domain and slug to `cardcrafter-wp-grid-layouts` to avoid restricted terms.
+* Compliance: Renamed text-domain and slug to `cardcrafter-data-grids` to avoid restricted terms.
 * Compatibility: Upgraded to `wp_parse_url` and verified testing up to WordPress 6.9.
 * Maintenance: Optimized tags and metadata for official directory submission.
 

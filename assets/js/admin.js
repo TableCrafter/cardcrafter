@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const urlInput = document.getElementById('cc-preview-url');
-    const layoutSelect = document.getElementById('cc-layout');
-    const columnsSelect = document.getElementById('cc-columns');
-    const previewBtn = document.getElementById('cc-preview-btn');
-    const copyBtn = document.getElementById('cc-copy-shortcode');
-    const shortcodeDisplay = document.getElementById('cc-shortcode-display');
-    const container = document.getElementById('cc-preview-container');
-    const demoLinks = document.querySelectorAll('.cc-demo-links a');
+    const urlInput = document.getElementById('cardcrafter-preview-url');
+    const layoutSelect = document.getElementById('cardcrafter-layout');
+    const columnsSelect = document.getElementById('cardcrafter-columns');
+    const previewBtn = document.getElementById('cardcrafter-preview-btn');
+    const copyBtn = document.getElementById('cardcrafter-copy-shortcode');
+    const shortcodeDisplay = document.getElementById('cardcrafter-shortcode-display');
+    const container = document.getElementById('cardcrafter-preview-container');
+    const demoLinks = document.querySelectorAll('.cardcrafter-demo-links a');
 
     if (!urlInput) return;
 
@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
         container.style.display = 'block';
 
         if (typeof CardCrafter !== 'undefined') {
-            const cardId = 'cc-preview-' + Date.now();
+            const cardId = 'cardcrafter-preview-' + Date.now();
             container.innerHTML = `<div id="${cardId}" class="cardcrafter-container">${cardcrafterAdmin.i18n.loading}</div>`;
 
             // Use the secure proxy for admin previews too
-            const proxyUrl = `${cardcrafterAdmin.ajaxurl}?action=cc_proxy_fetch&url=${encodeURIComponent(url)}&nonce=${cardcrafterAdmin.nonce}`;
+            const proxyUrl = `${cardcrafterAdmin.ajaxurl}?action=cardcrafter_proxy_fetch&url=${encodeURIComponent(url)}&nonce=${cardcrafterAdmin.nonce}`;
 
             new CardCrafter({
                 selector: '#' + cardId,

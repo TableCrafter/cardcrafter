@@ -46,7 +46,7 @@
      * Initialize the card grid
      */
     CardCrafter.prototype.init = function () {
-        this.container.innerHTML = '<div class="cc-loading"><div class="cc-spinner"></div><p>Loading cards...</p></div>';
+        this.container.innerHTML = '<div class="cardcrafter-loading"><div class="cardcrafter-spinner"></div><p>Loading cards...</p></div>';
         this.fetchData();
     };
 
@@ -82,16 +82,16 @@
                 var errorMsg = error.message || 'Check your internet connection or data source URL.';
 
                 self.container.innerHTML =
-                    '<div class="cc-error-state" style="padding: 40px; text-align: center; border: 1px solid #fee2e2; background: #fef2f2; border-radius: 8px;">' +
+                    '<div class="cardcrafter-error-state" style="padding: 40px; text-align: center; border: 1px solid #fee2e2; background: #fef2f2; border-radius: 8px;">' +
                     '<div style="font-size: 24px; margin-bottom: 10px;">⚠️</div>' +
                     '<h3 style="margin: 0 0 10px 0; color: #991b1b;">Unable to load cards</h3>' +
                     '<p style="margin: 0 0 20px 0; color: #b91c1c; font-size: 14px;">' + errorMsg + '</p>' +
-                    '<button class="cc-retry-button" style="background: #991b1b; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600;">' +
+                    '<button class="cardcrafter-retry-button" style="background: #991b1b; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600;">' +
                     'Retry Loading' +
                     '</button>' +
                     '</div>';
 
-                var retryBtn = self.container.querySelector('.cc-retry-button');
+                var retryBtn = self.container.querySelector('.cardcrafter-retry-button');
                 if (retryBtn) {
                     retryBtn.addEventListener('click', function () {
                         self.init();
@@ -137,13 +137,13 @@
         var items = Array.isArray(data) ? data : (data.items || data.data || data.results || [data]);
 
         if (!items.length) {
-            this.container.innerHTML = '<div class="cc-error"><p>No data found</p></div>';
+            this.container.innerHTML = '<div class="cardcrafter-error"><p>No data found</p></div>';
             return;
         }
 
         // Create wrapper
         var wrapper = document.createElement('div');
-        wrapper.className = 'cc-grid cc-layout-' + this.options.layout + ' cc-cols-' + this.options.columns;
+        wrapper.className = 'cardcrafter-grid cardcrafter-layout-' + this.options.layout + ' cardcrafter-cols-' + this.options.columns;
 
         // Generate cards
         items.forEach(function (item, index) {
@@ -171,16 +171,16 @@
 
         // Create card element
         var card = document.createElement('div');
-        card.className = 'cc-card';
+        card.className = 'cardcrafter-card';
         card.setAttribute('data-index', index);
 
         // Card inner wrapper (for animations)
         var cardInner = document.createElement('div');
-        cardInner.className = 'cc-card-inner';
+        cardInner.className = 'cardcrafter-card-inner';
 
         // Image section
         var imageSection = document.createElement('div');
-        imageSection.className = 'cc-card-image';
+        imageSection.className = 'cardcrafter-card-image';
         var img = document.createElement('img');
         img.src = image || this.getPlaceholderImage(title);
         img.alt = title;
@@ -193,18 +193,18 @@
 
         // Content section
         var content = document.createElement('div');
-        content.className = 'cc-card-content';
+        content.className = 'cardcrafter-card-content';
 
         // Title
         var titleEl = document.createElement('h3');
-        titleEl.className = 'cc-card-title';
+        titleEl.className = 'cardcrafter-card-title';
         titleEl.textContent = title;
         content.appendChild(titleEl);
 
         // Subtitle
         if (subtitle) {
             var subtitleEl = document.createElement('p');
-            subtitleEl.className = 'cc-card-subtitle';
+            subtitleEl.className = 'cardcrafter-card-subtitle';
             subtitleEl.textContent = subtitle;
             content.appendChild(subtitleEl);
         }
@@ -212,7 +212,7 @@
         // Description
         if (description) {
             var descEl = document.createElement('p');
-            descEl.className = 'cc-card-description';
+            descEl.className = 'cardcrafter-card-description';
             // Truncate if too long
             descEl.textContent = description.length > 150 ? description.substring(0, 147) + '...' : description;
             content.appendChild(descEl);
@@ -221,7 +221,7 @@
         // Link/Button
         if (link) {
             var linkEl = document.createElement('a');
-            linkEl.className = 'cc-card-link';
+            linkEl.className = 'cardcrafter-card-link';
             linkEl.href = link;
             linkEl.textContent = 'Learn More';
             linkEl.target = '_blank';

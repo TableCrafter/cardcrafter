@@ -9,18 +9,18 @@
    CSS Variables
    ========================================================================== */
 :root {
-    --cc-card-bg: #ffffff;
-    --cc-card-border: #e5e7eb;
-    --cc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --cc-card-shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.15);
-    --cc-card-radius: 12px;
-    --cc-title-color: #1f2937;
-    --cc-subtitle-color: #6b7280;
-    --cc-text-color: #4b5563;
-    --cc-link-color: #3b82f6;
-    --cc-link-hover: #2563eb;
-    --cc-gap: 24px;
-    --cc-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --cardcrafter-card-bg: #ffffff;
+    --cardcrafter-card-border: #e5e7eb;
+    --cardcrafter-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --cardcrafter-card-shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.15);
+    --cardcrafter-card-radius: 12px;
+    --cardcrafter-title-color: #1f2937;
+    --cardcrafter-subtitle-color: #6b7280;
+    --cardcrafter-text-color: #4b5563;
+    --cardcrafter-link-color: #3b82f6;
+    --cardcrafter-link-hover: #2563eb;
+    --cardcrafter-gap: 24px;
+    --cardcrafter-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
@@ -34,20 +34,20 @@
 /* ==========================================================================
    Loading State
    ========================================================================== */
-.cc-loading {
+.cardcrafter-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 60px 20px;
-    color: var(--cc-subtitle-color);
+    color: var(--cardcrafter-subtitle-color);
 }
 
-.cc-spinner {
+.cardcrafter-spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid var(--cc-card-border);
-    border-top-color: var(--cc-link-color);
+    border: 3px solid var(--cardcrafter-card-border);
+    border-top-color: var(--cardcrafter-link-color);
     border-radius: 50%;
     animation: cc-spin 0.8s linear infinite;
     margin-bottom: 16px;
@@ -62,57 +62,57 @@
 /* ==========================================================================
    Error State
    ========================================================================== */
-.cc-error {
+.cardcrafter-error {
     padding: 40px 20px;
     text-align: center;
     background: #fef2f2;
     border: 1px solid #fecaca;
-    border-radius: var(--cc-card-radius);
+    border-radius: var(--cardcrafter-card-radius);
     color: #dc2626;
 }
 
 /* ==========================================================================
    Grid Layout
    ========================================================================== */
-.cc-grid {
+.cardcrafter-grid {
     display: grid;
-    gap: var(--cc-gap);
+    gap: var(--cardcrafter-gap);
     width: 100%;
 }
 
 /* Column configurations */
-.cc-cols-2 {
+.cardcrafter-cols-2 {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.cc-cols-3 {
+.cardcrafter-cols-3 {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.cc-cols-4 {
+.cardcrafter-cols-4 {
     grid-template-columns: repeat(4, 1fr);
 }
 
 /* Responsive breakpoints */
 @media (max-width: 1024px) {
-    .cc-cols-4 {
+    .cardcrafter-cols-4 {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 768px) {
 
-    .cc-cols-3,
-    .cc-cols-4 {
+    .cardcrafter-cols-3,
+    .cardcrafter-cols-4 {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 480px) {
 
-    .cc-cols-2,
-    .cc-cols-3,
-    .cc-cols-4 {
+    .cardcrafter-cols-2,
+    .cardcrafter-cols-3,
+    .cardcrafter-cols-4 {
         grid-template-columns: 1fr;
     }
 }
@@ -120,27 +120,27 @@
 /* ==========================================================================
    List Layout
    ========================================================================== */
-.cc-layout-list {
+.cardcrafter-layout-list {
     grid-template-columns: 1fr !important;
 }
 
-.cc-layout-list .cc-card-inner {
+.cardcrafter-layout-list .cardcrafter-card-inner {
     display: flex;
     flex-direction: row;
 }
 
-.cc-layout-list .cc-card-image {
+.cardcrafter-layout-list .cardcrafter-card-image {
     flex: 0 0 200px;
     aspect-ratio: auto;
     height: 100%;
 }
 
-.cc-layout-list .cc-card-image img {
+.cardcrafter-layout-list .cardcrafter-card-image img {
     height: 100%;
     object-fit: cover;
 }
 
-.cc-layout-list .cc-card-content {
+.cardcrafter-layout-list .cardcrafter-card-content {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -148,11 +148,11 @@
 }
 
 @media (max-width: 600px) {
-    .cc-layout-list .cc-card-inner {
+    .cardcrafter-layout-list .cardcrafter-card-inner {
         flex-direction: column;
     }
 
-    .cc-layout-list .cc-card-image {
+    .cardcrafter-layout-list .cardcrafter-card-image {
         flex: none;
         aspect-ratio: 16/9;
         height: auto;
@@ -162,43 +162,43 @@
 /* ==========================================================================
    Masonry Layout (CSS-only approximation)
    ========================================================================== */
-.cc-layout-masonry {
+.cardcrafter-layout-masonry {
     display: block;
     column-count: 3;
-    column-gap: var(--cc-gap);
+    column-gap: var(--cardcrafter-gap);
 }
 
-.cc-layout-masonry.cc-cols-2 {
+.cardcrafter-layout-masonry.cardcrafter-cols-2 {
     column-count: 2;
 }
 
-.cc-layout-masonry.cc-cols-4 {
+.cardcrafter-layout-masonry.cardcrafter-cols-4 {
     column-count: 4;
 }
 
-.cc-layout-masonry .cc-card {
+.cardcrafter-layout-masonry .cardcrafter-card {
     break-inside: avoid;
-    margin-bottom: var(--cc-gap);
+    margin-bottom: var(--cardcrafter-gap);
 }
 
-.cc-layout-masonry .cc-card-image {
+.cardcrafter-layout-masonry .cardcrafter-card-image {
     aspect-ratio: auto;
 }
 
 @media (max-width: 1024px) {
-    .cc-layout-masonry.cc-cols-4 {
+    .cardcrafter-layout-masonry.cardcrafter-cols-4 {
         column-count: 3;
     }
 }
 
 @media (max-width: 768px) {
-    .cc-layout-masonry {
+    .cardcrafter-layout-masonry {
         column-count: 2 !important;
     }
 }
 
 @media (max-width: 480px) {
-    .cc-layout-masonry {
+    .cardcrafter-layout-masonry {
         column-count: 1 !important;
     }
 }
@@ -206,21 +206,21 @@
 /* ==========================================================================
    Card Styles
    ========================================================================== */
-.cc-card {
-    background: var(--cc-card-bg);
-    border-radius: var(--cc-card-radius);
+.cardcrafter-card {
+    background: var(--cardcrafter-card-bg);
+    border-radius: var(--cardcrafter-card-radius);
     overflow: hidden;
-    box-shadow: var(--cc-card-shadow);
-    border: 1px solid var(--cc-card-border);
-    transition: transform var(--cc-transition), box-shadow var(--cc-transition);
+    box-shadow: var(--cardcrafter-card-shadow);
+    border: 1px solid var(--cardcrafter-card-border);
+    transition: transform var(--cardcrafter-transition), box-shadow var(--cardcrafter-transition);
 }
 
-.cc-card:hover {
+.cardcrafter-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--cc-card-shadow-hover);
+    box-shadow: var(--cardcrafter-card-shadow-hover);
 }
 
-.cc-card-inner {
+.cardcrafter-card-inner {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -229,79 +229,79 @@
 /* ==========================================================================
    Card Image
    ========================================================================== */
-.cc-card-image {
+.cardcrafter-card-image {
     position: relative;
     overflow: hidden;
     aspect-ratio: 16/10;
     background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
 }
 
-.cc-card-image img {
+.cardcrafter-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--cc-transition);
+    transition: transform var(--cardcrafter-transition);
 }
 
-.cc-card:hover .cc-card-image img {
+.cardcrafter-card:hover .cardcrafter-card-image img {
     transform: scale(1.05);
 }
 
 /* ==========================================================================
    Card Content
    ========================================================================== */
-.cc-card-content {
+.cardcrafter-card-content {
     padding: 20px;
     flex: 1;
 }
 
-.cc-card-title {
+.cardcrafter-card-title {
     margin: 0 0 8px 0;
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--cc-title-color);
+    color: var(--cardcrafter-title-color);
     line-height: 1.4;
 }
 
-.cc-card-subtitle {
+.cardcrafter-card-subtitle {
     margin: 0 0 12px 0;
     font-size: 0.875rem;
-    color: var(--cc-subtitle-color);
+    color: var(--cardcrafter-subtitle-color);
     font-weight: 500;
 }
 
-.cc-card-description {
+.cardcrafter-card-description {
     margin: 0 0 16px 0;
     font-size: 0.9375rem;
-    color: var(--cc-text-color);
+    color: var(--cardcrafter-text-color);
     line-height: 1.6;
 }
 
-.cc-card-link {
+.cardcrafter-card-link {
     display: inline-flex;
     align-items: center;
     padding: 10px 20px;
-    background: var(--cc-link-color);
+    background: var(--cardcrafter-link-color);
     color: #ffffff !important;
     text-decoration: none !important;
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: 500;
-    transition: background var(--cc-transition), transform var(--cc-transition);
+    transition: background var(--cardcrafter-transition), transform var(--cardcrafter-transition);
 }
 
-.cc-card-link:hover {
-    background: var(--cc-link-hover);
+.cardcrafter-card-link:hover {
+    background: var(--cardcrafter-link-hover);
     transform: translateX(4px);
 }
 
-.cc-card-link::after {
+.cardcrafter-card-link::after {
     content: '→';
     margin-left: 8px;
-    transition: transform var(--cc-transition);
+    transition: transform var(--cardcrafter-transition);
 }
 
-.cc-card-link:hover::after {
+.cardcrafter-card-link:hover::after {
     transform: translateX(4px);
 }
 
@@ -310,12 +310,12 @@
    ========================================================================== */
 @media (prefers-color-scheme: dark) {
     :root {
-        --cc-card-bg: #1f2937;
-        --cc-card-border: #374151;
-        --cc-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --cc-card-shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.4);
-        --cc-title-color: #f9fafb;
-        --cc-subtitle-color: #9ca3af;
-        --cc-text-color: #d1d5db;
+        --cardcrafter-card-bg: #1f2937;
+        --cardcrafter-card-border: #374151;
+        --cardcrafter-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --cardcrafter-card-shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.4);
+        --cardcrafter-title-color: #f9fafb;
+        --cardcrafter-subtitle-color: #9ca3af;
+        --cardcrafter-text-color: #d1d5db;
     }
 }
