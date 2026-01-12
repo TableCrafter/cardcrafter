@@ -314,6 +314,9 @@ class CardCrafter
     /**
      * Secure AJAX Data Proxy & Cache Handler.
      */
+    /**
+     * Secure AJAX Data Proxy & Cache Handler.
+     */
     public function ajax_proxy_fetch()
     {
         // 1. Verify Nonce First (Compliance: NonceVerification)
@@ -325,8 +328,9 @@ class CardCrafter
         // 2. Fetch and Unslash URL (Compliance: MissingUnslash)
         $url = isset($_REQUEST['url']) ? esc_url_raw(wp_unslash($_REQUEST['url'])) : '';
 
-        if (empty($url) || !$this->is_safe_url($url)) {
-            wp_send_json_error('Invalid or unsafe URL.');
+        // Verification: Use wp_safe_remote_get which handles private IP blocking
+        if (empty($url)) {
+            wp_send_json_error('Invalid URL.');
         }
 
         $cache_key = 'cardcrafter_cache_' . md5($url);
@@ -336,8 +340,11 @@ class CardCrafter
             wp_send_json_success($cached_data);
         }
 
-        $response = wp_remote_get($url, array('timeout' => 15));
+        // SENSITIVE SINK: Using wp_safe_remote_get to prevent SSRF
+        $response = wp_safe_remote_get($url, array('timeout' => 15));
+
         if (is_wp_error($response)) {
+            // This handles both connection errors AND blocked local IPs
             wp_send_json_error($response->get_error_message());
         }
 
@@ -375,7 +382,8 @@ class CardCrafter
     {
         $urls = get_option('cardcrafter_tracked_urls', array());
         foreach ($urls as $url) {
-            $response = wp_remote_get($url, array('timeout' => 10));
+            // Using safe method here as well
+            $response = wp_safe_remote_get($url, array('timeout' => 10));
             if (!is_wp_error($response)) {
                 $body = wp_remote_retrieve_body($response);
                 $data = json_decode($body, true);
@@ -386,28 +394,9 @@ class CardCrafter
         }
     }
 
-    /**
-     * SSRF Prevention Helper.
-     */
-    private function is_safe_url(string $url): bool
-    {
-        // Use wp_parse_url for consistency (Compliance: parse_url discourage)
-        $url_parts = wp_parse_url($url);
-        $host = isset($url_parts['host']) ? $url_parts['host'] : '';
-
-        if (!$host)
-            return false;
-        if (in_array(strtolower($host), array('localhost', '127.0.0.1', '[::1]')))
-            return false;
-        if (filter_var($host, FILTER_VALIDATE_IP)) {
-            $is_private = !filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
-            if ($is_private)
-                return false;
-        }
-        return true;
-    }
-
 }
 
 // Initialize
-CardCrafter::get_instance();
+if (!defined('WP_INT_TEST')) {
+    CardCrafter::get_instance();
+}
