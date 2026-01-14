@@ -4,7 +4,7 @@ Tags: json, cards, grid, portfolio, team
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,11 +81,18 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 
 == Screenshots ==
 
-1. **Admin Dashboard** - Configure your card layout and preview instantly in the WordPress admin.
-2. **Grid Layout** - Beautiful responsive card grid displaying team members.
-3. **Masonry Layout** - Pinterest-style masonry layout for varied content heights.
+1. **Admin Dashboard & Grid Preview (Team Directory)** - Configure your card layout and preview instantly in the WordPress admin.
+2. **Masonry Layout (Team Directory)** - Pinterest-style masonry layout for varied content heights.
+3. **List Layout (Team Directory)** - Clean horizontal list view for detailed content.
+4. **Product Showcase** - Grid layout perfect for displaying products with prices.
+5. **Portfolio Gallery** - Elegant display for creative work.
 
 == Changelog ==
+
+= 1.1.4 =
+* Security: Implemented rate limiting (30 requests/minute) on the AJAX proxy to prevent abuse.
+* Security: Added robust client identification handling for proxies (Cloudflare, X-Forwarded-For).
+* Improvement: Returns standard HTTP 429 response when rate limit is exceeded.
 
 = 1.1.3 =
 * Refactor: Updated all function prefixes to `cardcrafter_` for compliance.

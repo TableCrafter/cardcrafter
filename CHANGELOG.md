@@ -2,6 +2,12 @@
 
 All notable changes to CardCrafter will be documented in this file.
 
+## [1.1.4] - 2026-01-14
+### Security
+- **Rate Limiting:** Implemented transient-based rate limiting (30 req/min) on the AJAX proxy endpoint.
+- **Abuse Prevention:** Added client identification via user ID or IP address (Cloudflare/Proxy aware).
+- **Error Handling:** Returns HTTP 429 status code when rate limit is exceeded.
+
 ## [1.1.3] - 2026-01-06
 ### Fixed
 - **Security:** Added `wp_unslash` to all user input processing and fixed nonce verification order.

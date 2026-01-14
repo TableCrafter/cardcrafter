@@ -3,9 +3,9 @@
  * Plugin Name: CardCrafter – Data-Driven Card Grids
  * Plugin URI: https://github.com/TableCrafter/cardcrafter-data-grids
  * Description: Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author: fahdi
- * Author URI: https://github.com/fahdi
+ * Author URI: https://github.com/TableCrafter
  * License: GPLv2 or later
  * Text Domain: cardcrafter-data-grids
  * Domain Path: /languages
@@ -20,7 +20,7 @@ Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / c
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 */
 
-define('CARDCRAFTER_VERSION', '1.1.3');
+define('CARDCRAFTER_VERSION', '1.1.4');
 define('CARDCRAFTER_URL', plugin_dir_url(__FILE__));
 define('CARDCRAFTER_PATH', plugin_dir_path(__FILE__));
 
@@ -325,6 +325,12 @@ class CardCrafter
             wp_send_json_error('Security check failed.');
         }
 
+        // 1.5 Rate Limiting Check (Security)
+        if ($this->is_rate_limited()) {
+            status_header(429);
+            wp_send_json_error('Rate limit exceeded. Please wait.', 429);
+        }
+
         // 2. Fetch and Unslash URL (Compliance: MissingUnslash)
         $url = isset($_REQUEST['url']) ? esc_url_raw(wp_unslash($_REQUEST['url'])) : '';
 
@@ -394,6 +400,66 @@ class CardCrafter
         }
     }
 
+    /**
+     * Rate Limiting Constants.
+     */
+    private const RATE_LIMIT_MAX_REQUESTS = 30;
+    private const RATE_LIMIT_WINDOW_SECONDS = 60;
+
+    /**
+     * Rate Limiting Helper.
+     * 
+     * Checks and increments the request count for the current user/IP.
+     * 
+     * @return bool True if rate limit exceeded, false if allowed.
+     */
+    private function is_rate_limited(): bool
+    {
+        // Build unique identifier
+        $identifier = get_current_user_id();
+        if ($identifier === 0) {
+            $identifier = $this->get_client_ip();
+        }
+
+        $transient_key = 'cc_rate_' . md5((string) $identifier);
+        $current_count = get_transient($transient_key);
+
+        if ($current_count === false) {
+            set_transient($transient_key, 1, self::RATE_LIMIT_WINDOW_SECONDS);
+            return false;
+        }
+
+        if ((int) $current_count >= self::RATE_LIMIT_MAX_REQUESTS) {
+            return true;
+        }
+
+        set_transient($transient_key, (int) $current_count + 1, self::RATE_LIMIT_WINDOW_SECONDS);
+        return false;
+    }
+
+    /**
+     * Get Client IP Address.
+     * 
+     * @return string The client IP address.
+     */
+    private function get_client_ip(): string
+    {
+        $ip = '';
+        $headers = array('HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'REMOTE_ADDR');
+
+        foreach ($headers as $header) {
+            if (!empty($_SERVER[$header])) {
+                $ip = explode(',', sanitize_text_field(wp_unslash($_SERVER[$header])))[0];
+                $ip = trim($ip);
+                if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                    break;
+                }
+                $ip = '';
+            }
+        }
+
+        return $ip ?: 'unknown_' . md5(wp_json_encode($_SERVER));
+    }
 }
 
 // Initialize
