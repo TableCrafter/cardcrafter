@@ -3,8 +3,9 @@
 **Contributors:** fahdi  
 **Tags:** cards, json, api, grid, team, portfolio  
 **Requires at least:** 5.0  
+**Requires at least:** 5.0  
 **Tested up to:** 6.9  
-**Stable tag:** 1.1.3  
+**Stable tag:** 1.2.0  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,10 +25,12 @@ Whether you're building a team directory, product showcase, or portfolio gallery
 *   **🎨 Beautiful by Default:** Modern, clean card designs that look professional out of the box.
 *   **📱 Fully Responsive:** Cards automatically adapt to any screen size.
 *   **⚡ Lightweight:** Pure JavaScript, no jQuery. Fast and efficient.
+*   **🔍 Interactive:** Built-in search and sorting for easy data navigation.
 *   **🔧 Flexible Layouts:** Choose between Grid, Masonry, or List view.
 
 ### 🚀 Key Features
 
+*   **Instant Search & Sort:** Users can filter and sort cards instantly (Client-side).
 *   **Multiple Layouts:** Grid, Masonry, and List views to suit your content.
 *   **Customizable Columns:** Display 2, 3, or 4 cards per row.
 *   **Smart Field Mapping:** Automatically detects image, title, subtitle, description, and link fields.
@@ -99,6 +102,16 @@ Yes! CardCrafter uses CSS variables that you can override in your theme's custom
 CardCrafter works with any publicly accessible JSON endpoint. The API must allow CORS requests from your domain.
 
 ## Changelog
+
+### 1.2.0
+*   Feature: Added interactive Search Toolbar (Client-side filtering).
+*   Feature: Added Sorting functionality (A-Z, Z-A).
+*   Design: Added modern styles for search inputs and dropdowns.
+
+### 1.1.4
+*   Security: Implemented rate limiting (30 requests/minute) on the AJAX proxy to prevent abuse.
+*   Security: Added robust client identification handling for proxies (Cloudflare, X-Forwarded-For).
+*   Improvement: Returns standard HTTP 429 response when rate limit is exceeded.
 
 ### 1.1.3
 *   Refactor: Updated all function prefixes to `cardcrafter_` for compliance.

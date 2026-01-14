@@ -2,6 +2,12 @@
 
 All notable changes to CardCrafter will be documented in this file.
 
+## [1.2.0] - 2026-01-15
+### Added
+- **Interactive Toolbar:** Client-side search and sorting (A-Z, Z-A) for instant data navigation.
+- **UI Components:** Modern, responsive styles for search inputs and dropdowns matching the plugin theme.
+- **Architecture:** Refactored core library to decouple data source (`items`) from view state (`filteredItems`).
+
 ## [1.1.4] - 2026-01-14
 ### Security
 - **Rate Limiting:** Implemented transient-based rate limiting (30 req/min) on the AJAX proxy endpoint.
