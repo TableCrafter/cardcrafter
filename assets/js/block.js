@@ -136,27 +136,39 @@
 
                 // Main visual editor view (Live Preview)
                 el('div', { className: props.className, key: 'preview' },
-                    attributes.source 
+                    (attributes.source && attributes.source.trim() !== '') 
                         ? el(serverSideRender, {
                             block: 'cardcrafter/data-grid',
-                            attributes: attributes
+                            attributes: attributes,
+                            EmptyResponsePlaceholder: function() {
+                                return el('div', { style: { padding: '20px', textAlign: 'center', color: '#666' } },
+                                    el('p', null, '⚠️ No data found at the specified URL'),
+                                    el('p', { style: { fontSize: '12px' } }, 'Please check your data source URL.')
+                                );
+                            },
+                            ErrorResponsePlaceholder: function() {
+                                return el('div', { style: { padding: '20px', textAlign: 'center', color: '#dc3232' } },
+                                    el('p', null, '❌ Error loading data'),
+                                    el('p', { style: { fontSize: '12px' } }, 'Please check your data source URL and try again.')
+                                );
+                            }
                         })
                         : el('div', { 
                             className: 'cardcrafter-block-preview',
                             style: { 
                                 padding: '20px', 
-                                border: '1px solid #ddd', 
+                                border: '1px dashed #ccc', 
                                 borderRadius: '4px',
                                 textAlign: 'center',
                                 background: '#f9f9f9'
                             }
                         },
-                            el('div', { style: { color: '#999' } },
+                            el('div', { style: { color: '#666' } },
                                 el('div', { 
                                     className: 'dashicons dashicons-grid-view',
                                     style: { fontSize: '48px', marginBottom: '10px' }
                                 }),
-                                el('p', null, 'Configure your data source in the sidebar to create beautiful card grids.'),
+                                el('p', null, '📝 Configure your data source in the sidebar to see live preview'),
                                 el('p', { style: { fontSize: '12px' } }, 
                                     'Try one of the demo data sources to get started quickly.'
                                 )
