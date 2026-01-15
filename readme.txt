@@ -1,6 +1,6 @@
 === CardCrafter – Data-Driven Card Grids ===
 Contributors: fahdi
-Tags: json, cards, grid, portfolio, team, gutenberg, block
+Tags: json, cards, grid, portfolio, team
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -99,12 +99,25 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 
 == Screenshots ==
 
-1. **Gutenberg Block Editor** - Native WordPress block with sidebar configuration and live preview.
-2. **Admin Dashboard & Grid Preview (Team Directory)** - Configure your card layout and preview instantly in the WordPress admin.
-3. **Masonry Layout (Team Directory)** - Pinterest-style masonry layout for varied content heights.
-4. **List Layout (Team Directory)** - Clean horizontal list view for detailed content.
-5. **Product Showcase** - Grid layout perfect for displaying products with prices.
-6. **Portfolio Gallery** - Elegant display for creative work.
+1. **Gutenberg Block Editor Interface** - Native WordPress block with sidebar controls for data source selection, layout options (Grid/Masonry/List), column configuration, and search/sort toggles. Shows clean 4-card grid icon and live preview.
+
+2. **Block Editor Demo Data Selection** - Sidebar dropdown featuring built-in demo sources (Team Directory, Product Showcase, Portfolio Gallery) for quick testing and prototyping.
+
+3. **Frontend Grid Layout (Team Directory)** - Responsive 3-column grid displaying team member cards with photos, names, roles, and contact information. Clean hover effects and professional styling.
+
+4. **Frontend Masonry Layout (Team Directory)** - Pinterest-style masonry layout accommodating varied content heights while maintaining visual balance and readability.
+
+5. **Frontend List Layout (Team Directory)** - Horizontal list view optimized for detailed content display, perfect for directory-style information with extended descriptions.
+
+6. **Product Showcase Grid** - E-commerce style card layout featuring products with images, pricing, descriptions, and call-to-action buttons.
+
+7. **Portfolio Gallery Display** - Creative portfolio layout showcasing work samples with overlay information and smooth hover transitions.
+
+8. **Admin Dashboard Preview** - Classic admin interface for users preferring shortcode workflow, showing JSON URL configuration and instant preview functionality.
+
+9. **Interactive Search & Sort** - Frontend toolbar with real-time search filtering and alphabetical sorting options for enhanced user navigation.
+
+10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
 
