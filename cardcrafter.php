@@ -222,9 +222,9 @@ class CardCrafter
         // Demo URLs for the block editor
         $demo_urls = array(
             array('label' => 'Select a demo...', 'value' => ''),
-            array('label' => '👥 Team Directory', 'value' => CARDCRAFTER_URL . 'assets/demo/team.json'),
-            array('label' => '📦 Product Showcase', 'value' => CARDCRAFTER_URL . 'assets/demo/products.json'),
-            array('label' => '🎨 Portfolio Gallery', 'value' => CARDCRAFTER_URL . 'assets/demo/portfolio.json')
+            array('label' => '👥 Team Directory', 'value' => CARDCRAFTER_URL . 'demo-data/team.json'),
+            array('label' => '📦 Product Showcase', 'value' => CARDCRAFTER_URL . 'demo-data/products.json'),
+            array('label' => '🎨 Portfolio Gallery', 'value' => CARDCRAFTER_URL . 'demo-data/portfolio.json')
         );
 
         wp_localize_script('cardcrafter-block', 'cardcrafterData', array(
