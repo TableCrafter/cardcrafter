@@ -207,7 +207,7 @@ class CardCrafter
         wp_register_script(
             'cardcrafter-block',
             CARDCRAFTER_URL . 'assets/js/block.js',
-            array('wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element'),
+            array('wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-server-side-render'),
             CARDCRAFTER_VERSION,
             true
         );

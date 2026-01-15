@@ -134,43 +134,32 @@
                     )
                 ),
 
-                // Block preview in editor
-                el('div', { 
-                    className: 'cardcrafter-block-preview',
-                    style: { 
-                        padding: '20px', 
-                        border: '1px solid #ddd', 
-                        borderRadius: '4px',
-                        textAlign: 'center',
-                        background: '#f9f9f9'
-                    }
-                },
+                // Main visual editor view (Live Preview)
+                el('div', { className: props.className, key: 'preview' },
                     attributes.source 
-                        ? el('div', { style: { color: '#666' } },
-                            el('div', { 
-                                className: 'dashicons dashicons-grid-view',
-                                style: { fontSize: '48px', marginBottom: '10px', color: '#e11d48' }
-                            }),
-                            el('p', null, 
-                                'CardCrafter Grid: ', 
-                                el('strong', null, attributes.layout),
-                                ' layout'
-                            ),
-                            el('p', { style: { fontSize: '12px', margin: '5px 0' } }, 
-                                'Source: ', attributes.source
-                            ),
-                            el('p', { style: { fontSize: '12px', color: '#999' } }, 
-                                'Live preview available on frontend'
-                            )
-                        )
-                        : el('div', { style: { color: '#999' } },
-                            el('div', { 
-                                className: 'dashicons dashicons-grid-view',
-                                style: { fontSize: '48px', marginBottom: '10px' }
-                            }),
-                            el('p', null, 'Configure your data source in the sidebar to create beautiful card grids.'),
-                            el('p', { style: { fontSize: '12px' } }, 
-                                'Try one of the demo data sources to get started quickly.'
+                        ? el(serverSideRender, {
+                            block: 'cardcrafter/data-grid',
+                            attributes: attributes
+                        })
+                        : el('div', { 
+                            className: 'cardcrafter-block-preview',
+                            style: { 
+                                padding: '20px', 
+                                border: '1px solid #ddd', 
+                                borderRadius: '4px',
+                                textAlign: 'center',
+                                background: '#f9f9f9'
+                            }
+                        },
+                            el('div', { style: { color: '#999' } },
+                                el('div', { 
+                                    className: 'dashicons dashicons-grid-view',
+                                    style: { fontSize: '48px', marginBottom: '10px' }
+                                }),
+                                el('p', null, 'Configure your data source in the sidebar to create beautiful card grids.'),
+                                el('p', { style: { fontSize: '12px' } }, 
+                                    'Try one of the demo data sources to get started quickly.'
+                                )
                             )
                         )
                 )
