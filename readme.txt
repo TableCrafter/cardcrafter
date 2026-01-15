@@ -4,7 +4,7 @@ Tags: json, cards, grid, data, layout
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ Transform JSON data into beautiful, responsive card grids. Perfect for team dire
 == Description ==
 
 🚀 **[Try Live Demo](https://tastewp.com/plugins/cardcrafter-data-grids)** - Test CardCrafter instantly without installation!
+
+**Live Demo Available** - Experience CardCrafter's enterprise pagination system and beautiful card layouts in action.
 
 Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / cardcrafter-data-grids. 
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
@@ -122,6 +124,11 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
+
+= 1.4.1 =
+* Enhancement: Added TasteWP live demo link for instant plugin testing.
+* UX: Users can now test CardCrafter without installation at https://tastewp.com/plugins/cardcrafter-data-grids
+* Marketing: Improved plugin adoption by removing installation friction.
 
 = 1.4.0 =
 * MAJOR: Added enterprise-grade pagination system - removes show-stopper business blocker.
