@@ -12,9 +12,9 @@ Transform JSON data into beautiful, responsive card grids. Perfect for team dire
 
 == Description ==
 
-Don't take our word for it — try CardCrafter live. **[Full-featured demo](https://tastewp.com/plugins/cardcrafter-data-grids)** on a real WordPress site. No signup, no download, no risk.
+Don't take our word for it, try CardCrafter live. **[Full-featured demo](https://tastewp.com/plugins/cardcrafter-data-grids)** on a real WordPress site. No signup, no download, no risk.
 
-**CardCrafter** is the #1 WordPress plugin for displaying data as beautiful card grids. Transform your WordPress posts, JSON data, and custom content into professional, responsive card layouts—no coding required.
+**CardCrafter** is the #1 WordPress plugin for displaying data as beautiful card grids. Transform your WordPress posts, JSON data, and custom content into professional, responsive card layouts. No coding required.
 
 **Perfect for:**
 • **Team Directories** - Display staff members with photos and bios
