@@ -164,9 +164,12 @@ class CardCrafter
                             <li style="margin-bottom: 8px;"><a href="#" class="button" style="width: 100%; text-align: left;"
                                     data-url="<?php echo esc_url($products_url); ?>">🛍️
                                     <?php esc_html_e('Product Showcase', 'cardcrafter-data-grids'); ?></a></li>
-                            <li style="margin-bottom: 0;"><a href="#" class="button" style="width: 100%; text-align: left;"
+                            <li style="margin-bottom: 8px;"><a href="#" class="button" style="width: 100%; text-align: left;"
                                     data-url="<?php echo esc_url($portfolio_url); ?>">🎨
                                     <?php esc_html_e('Portfolio Gallery', 'cardcrafter-data-grids'); ?></a></li>
+                            <li style="margin-bottom: 0;"><a href="#" class="button" style="width: 100%; text-align: left;"
+                                    data-url="<?php echo esc_url(CARDCRAFTER_URL . 'demo-data/acf-examples.json'); ?>">📝
+                                    <?php esc_html_e('WordPress + ACF Examples', 'cardcrafter-data-grids'); ?></a></li>
                         </ul>
                     </div>
                 </div>
@@ -192,6 +195,60 @@ class CardCrafter
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- WordPress Integration Examples -->
+            <div class="card" style="margin-top: 20px;">
+                <h2>🚀 WordPress Native Integration Examples</h2>
+                <p>CardCrafter v1.6.0 introduces WordPress native data support. Use these shortcodes to display your WordPress content as cards:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">📝 Basic WordPress Posts</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="post"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Display blog posts with automatic featured images and excerpts.</p>
+                    </div>
+                    
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">🛍️ WooCommerce Products</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="product"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Show products with thumbnails and automatic pricing.</p>
+                    </div>
+                    
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">📂 Category Filtering</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="post" wp_query="category_name=news"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Display posts from specific categories.</p>
+                    </div>
+                    
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">👤 Author Filtering</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="post" wp_query="author=5"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Show posts from specific authors.</p>
+                    </div>
+                    
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">⭐ Featured Content</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="product" wp_query="meta_key=featured&meta_value=yes"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Filter by custom meta fields and values.</p>
+                    </div>
+                    
+                    <div style="padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0; color: #1d2327;">🎯 ACF Integration</h3>
+                        <code style="display: block; background: #f6f7f7; padding: 10px; border-radius: 3px; margin: 5px 0;">[cardcrafter-data-grids post_type="team" subtitle_field="job_title"]</code>
+                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Use ACF fields as card content automatically.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border: 1px solid #72aee6; border-radius: 4px;">
+                    <h4 style="margin: 0 0 10px 0; color: #1d2327;">💡 Pro Tips:</h4>
+                    <ul style="margin: 0;">
+                        <li><strong>ACF Support:</strong> All ACF fields are automatically available - just reference them by field name</li>
+                        <li><strong>Featured Images:</strong> WordPress post thumbnails are automatically used as card images</li>
+                        <li><strong>Permalinks:</strong> Card links automatically point to the WordPress post/page</li>
+                        <li><strong>Complex Queries:</strong> Use any WordPress query parameter in wp_query attribute</li>
+                    </ul>
                 </div>
             </div>
         </div>

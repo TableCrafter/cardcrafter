@@ -76,6 +76,17 @@ Don't take our word for it, try CardCrafter live. **[Full-featured demo](https:/
 `[cardcrafter-data-grids post_type="team" wp_query="orderby=title&order=ASC"]`
 *Display your WordPress posts, pages, or custom post types as beautiful cards*
 
+**Advanced WordPress Integration:**
+`[cardcrafter-data-grids post_type="post" wp_query="category_name=news&posts_per_page=6"]`
+`[cardcrafter-data-grids post_type="product" wp_query="meta_key=featured&meta_value=yes"]`
+`[cardcrafter-data-grids post_type="team" wp_query="author=5&orderby=menu_order"]`
+*Support for categories, custom fields, authors, and complex WordPress queries*
+
+**ACF (Advanced Custom Fields) Integration:**
+`[cardcrafter-data-grids post_type="portfolio" image_field="project_image" subtitle_field="client_name"]`
+`[cardcrafter-data-grids post_type="product" subtitle_field="price" description_field="product_features"]`
+*Automatic integration with ACF fields - use any custom field as card content*
+
 **Instant Demo (No Setup Required):**
 `[cardcrafter-data-grids]`
 *Automatically loads team demo data with professional banner*
@@ -109,7 +120,13 @@ Don't take our word for it, try CardCrafter live. **[Full-featured demo](https:/
 == Frequently Asked Questions ==
 
 = How do I display my WordPress posts as cards? =
-Use `[cardcrafter-data-grids post_type="post"]` to display your blog posts, or `[cardcrafter-data-grids post_type="product"]` for WooCommerce products. All WordPress post types are supported with automatic featured images and custom fields.
+Use `[cardcrafter-data-grids post_type="post"]` to display your blog posts, or `[cardcrafter-data-grids post_type="product"]` for WooCommerce products. All WordPress post types are supported with automatic featured images, excerpts, and permalinks.
+
+= How do I use ACF fields in my cards? =
+CardCrafter automatically detects all ACF fields. Use field names in shortcode parameters: `[cardcrafter-data-grids post_type="team" subtitle_field="job_title" description_field="bio"]`. Works with text fields, images, numbers, and all ACF field types.
+
+= Can I filter posts by category or author? =
+Yes! Use wp_query parameter: `[cardcrafter-data-grids post_type="post" wp_query="category_name=news"]` for categories, or `[cardcrafter-data-grids post_type="post" wp_query="author=5"]` for specific authors. Supports all WordPress query parameters.
 
 = How do I see CardCrafter in action immediately? =
 Simply use `[cardcrafter-data-grids]` anywhere on your site. No configuration required! CardCrafter will automatically display professional team demo data with a clear call-to-action to try your own data.

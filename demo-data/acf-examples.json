@@ -1,0 +1,58 @@
+[
+    {
+        "id": 101,
+        "title": "John Smith",
+        "subtitle": "Senior Developer",
+        "description": "10+ years building scalable web applications with expertise in React and Node.js.",
+        "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop",
+        "link": "/team/john-smith",
+        "job_title": "Senior Developer",
+        "bio": "10+ years building scalable web applications with expertise in React and Node.js.",
+        "email": "john@company.com",
+        "phone": "(555) 123-4567",
+        "linkedin": "https://linkedin.com/in/johnsmith",
+        "skills": ["JavaScript", "React", "Node.js", "AWS"]
+    },
+    {
+        "id": 102,
+        "title": "Premium Headphones",
+        "subtitle": "$299.99",
+        "description": "Noise-canceling headphones with 30-hour battery life and premium sound quality.",
+        "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+        "link": "/products/premium-headphones",
+        "price": "$299.99",
+        "product_features": "Noise-canceling headphones with 30-hour battery life and premium sound quality.",
+        "rating": 4.8,
+        "in_stock": true,
+        "warranty": "2 years",
+        "brand": "AudioTech"
+    },
+    {
+        "id": 103,
+        "title": "E-commerce Redesign",
+        "subtitle": "TechCorp Inc.",
+        "description": "Complete redesign of e-commerce platform resulting in 40% increase in conversions.",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
+        "link": "/portfolio/ecommerce-redesign",
+        "project_image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
+        "client_name": "TechCorp Inc.",
+        "project_type": "Web Design",
+        "completion_date": "2024-01-15",
+        "technologies": ["WordPress", "WooCommerce", "CSS3", "JavaScript"],
+        "project_url": "https://techcorp-store.com"
+    },
+    {
+        "id": 104,
+        "title": "Tech Conference 2024",
+        "subtitle": "December 15, 2024",
+        "description": "Annual technology conference featuring the latest in AI, blockchain, and web development.",
+        "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
+        "link": "/events/tech-conference-2024",
+        "event_date": "2024-12-15",
+        "location": "San Francisco, CA",
+        "ticket_price": "$299",
+        "capacity": 500,
+        "featured": true,
+        "speakers": ["Jane Doe", "Mike Johnson", "Sarah Chen"]
+    }
+]

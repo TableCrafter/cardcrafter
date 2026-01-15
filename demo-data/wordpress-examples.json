@@ -1,0 +1,52 @@
+[
+    {
+        "example": "Basic WordPress Posts",
+        "shortcode": "[cardcrafter-data-grids post_type=\"post\"]",
+        "description": "Display your blog posts with automatic featured images, excerpts, and permalinks"
+    },
+    {
+        "example": "WooCommerce Products",
+        "shortcode": "[cardcrafter-data-grids post_type=\"product\"]",
+        "description": "Show products with thumbnails, titles, and prices from WooCommerce"
+    },
+    {
+        "example": "Category Filtering",
+        "shortcode": "[cardcrafter-data-grids post_type=\"post\" wp_query=\"category_name=news\"]",
+        "description": "Display only posts from the 'news' category"
+    },
+    {
+        "example": "Author Filtering", 
+        "shortcode": "[cardcrafter-data-grids post_type=\"post\" wp_query=\"author=5\"]",
+        "description": "Show posts only from author with ID 5"
+    },
+    {
+        "example": "Featured Products",
+        "shortcode": "[cardcrafter-data-grids post_type=\"product\" wp_query=\"meta_key=featured&meta_value=yes\"]",
+        "description": "Display products marked as featured using custom meta fields"
+    },
+    {
+        "example": "ACF Team Directory",
+        "shortcode": "[cardcrafter-data-grids post_type=\"team\" subtitle_field=\"job_title\" description_field=\"bio\"]",
+        "description": "Team members with ACF fields for job title and bio"
+    },
+    {
+        "example": "ACF Portfolio",
+        "shortcode": "[cardcrafter-data-grids post_type=\"portfolio\" image_field=\"project_image\" subtitle_field=\"client_name\"]",
+        "description": "Portfolio items using ACF image and client fields"
+    },
+    {
+        "example": "ACF Product Pricing",
+        "shortcode": "[cardcrafter-data-grids post_type=\"product\" subtitle_field=\"price\" description_field=\"product_features\"]",
+        "description": "Products with ACF price and features fields"
+    },
+    {
+        "example": "Complex Query",
+        "shortcode": "[cardcrafter-data-grids post_type=\"event\" wp_query=\"meta_key=event_date&meta_value=2024-12-31&meta_compare=<&orderby=meta_value&order=ASC\"]",
+        "description": "Events before a specific date, sorted by event date"
+    },
+    {
+        "example": "Recent Posts Limit",
+        "shortcode": "[cardcrafter-data-grids post_type=\"post\" posts_per_page=\"6\" wp_query=\"orderby=date&order=DESC\"]",
+        "description": "Show 6 most recent posts"
+    }
+]
