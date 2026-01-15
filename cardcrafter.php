@@ -251,14 +251,14 @@ class CardCrafter
     public function render_block_callback($attributes)
     {
         $shortcode_attrs = array(
-            'source' => $attributes['source'],
-            'layout' => $attributes['layout'],
-            'search' => $attributes['search'] ? 'true' : 'false',
-            'sort' => $attributes['sort'] ? 'true' : 'false',
-            'columns' => $attributes['cards_per_row']
+            'source' => $attributes['source'] ?? '',
+            'layout' => $attributes['layout'] ?? 'grid',
+            'search' => ($attributes['search'] ?? true) ? 'true' : 'false',
+            'sort' => ($attributes['sort'] ?? true) ? 'true' : 'false',
+            'columns' => $attributes['cards_per_row'] ?? 3
         );
 
-        return $this->render_shortcode($shortcode_attrs);
+        return $this->render_cards($shortcode_attrs);
     }
 
     /**
