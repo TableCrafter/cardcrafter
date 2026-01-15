@@ -12,13 +12,11 @@ Transform JSON data into beautiful, responsive card grids. Perfect for team dire
 
 == Description ==
 
-Test CardCrafter instantly without installation! 
+Don't take our word for it — try CardCrafter live.
 
-Experience CardCrafter in action, no setup required!
+**[Full-Featured Demo →](https://tastewp.com/plugins/cardcrafter-data-grids)**
 
-**[Try Live Demo](https://tastewp.com/plugins/cardcrafter-data-grids)** 👈
-
-See enterprise-grade pagination, stunning card layouts, and real-time data display; all running on a live WordPress site. 
+Experience enterprise-grade pagination, stunning card layouts, and real-time data display on a real WordPress site. No signup, no download, no risk.
 
 60 seconds to "wow."
 
