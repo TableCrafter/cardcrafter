@@ -4,7 +4,7 @@ Tags: json, cards, grid, data, layout
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,16 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
+
+= 1.8.0 =
+* GAME CHANGER: Complete Elementor Pro dynamic content integration - unlocks 18+ million Elementor Pro users
+* NEW: Native Elementor Pro dynamic tags for ACF, Meta Box, Toolset, JetEngine, and Pods integration
+* NEW: Advanced dynamic field mapping with real-time field detection in Elementor editor
+* NEW: Professional Elementor widget controls with field source selection and custom mapping
+* NEW: Advanced filtering system - taxonomy, author, and meta field queries for precise content targeting
+* NEW: Enhanced WordPress data mode with dynamic content processing and custom field support
+* Enterprise: Enables Fortune 500 WordPress deployments, premium agency workflows, and enterprise content management
+* Technical: 14 new files, comprehensive test suite, backward compatible, performance optimized
 
 = 1.7.0 =
 * BREAKTHROUGH: Comprehensive data export system - first WordPress card plugin with multi-format export

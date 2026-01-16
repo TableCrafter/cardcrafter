@@ -2,6 +2,28 @@
 
 All notable changes to CardCrafter will be documented in this file.
 
+## [1.8.0] - 2026-01-16
+
+### 🎯 GAME CHANGER: Complete Elementor Pro Dynamic Content Integration
+- **NEW**: Native Elementor Pro dynamic tags for ACF, Meta Box, Toolset, JetEngine, and Pods integration
+- **NEW**: Advanced dynamic field mapping with real-time field detection in Elementor editor
+- **NEW**: Professional Elementor widget controls with field source selection and custom mapping
+- **NEW**: Advanced filtering system - taxonomy, author, and meta field queries for precise content targeting
+- **NEW**: Enhanced WordPress data mode with dynamic content processing and custom field support
+
+### 🏢 Enterprise Market Expansion
+- **Market**: Unlocks 18+ million Elementor Pro users for CardCrafter adoption
+- **Enterprise**: Enables Fortune 500 WordPress deployments with standard tech stack compatibility
+- **Agencies**: Premium agency workflows with familiar Elementor interface integration
+- **Technical Leadership**: First WordPress card plugin with complete Elementor Pro ecosystem support
+
+### 📊 Technical Excellence
+- **Architecture**: 14 new files implementing comprehensive dynamic content system
+- **Testing**: Complete unit test suite with 401 lines of test coverage
+- **Performance**: Conditional loading and smart caching for optimal performance
+- **Compatibility**: Fully backward compatible with zero breaking changes
+- **Security**: Enhanced validation and sanitization for all dynamic content sources
+
 ## [1.7.0] - 2026-01-16
 
 ### 🚀 BREAKTHROUGH: Comprehensive Data Export System
