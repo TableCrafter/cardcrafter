@@ -3,7 +3,7 @@
  * Plugin Name: CardCrafter – Data-Driven Card Grids
  * Plugin URI: https://github.com/TableCrafter/cardcrafter-data-grids
  * Description: Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
- * Version: 1.7.0
+ * Version: 1.8.0
  * Author: fahdi
  * Author URI: https://github.com/TableCrafter
  * License: GPLv2 or later
@@ -20,7 +20,7 @@ Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / c
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 */
 
-define('CARDCRAFTER_VERSION', '1.7.0');
+define('CARDCRAFTER_VERSION', '1.8.0');
 define('CARDCRAFTER_URL', plugin_dir_url(__FILE__));
 define('CARDCRAFTER_PATH', plugin_dir_path(__FILE__));
 
