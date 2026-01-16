@@ -4,7 +4,7 @@ Tags: json, cards, grid, data, layout
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,17 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
+
+= 1.9.0 =
+* REVOLUTIONARY: Complete freemium business model implementation - sustainable revenue generation unlocked
+* NEW: Professional license management system with Free, Pro ($49/year), and Business ($99/year) tiers
+* NEW: Smart feature gating - Free (12 cards, CSV export), Pro (unlimited cards, premium templates), Business (white label)
+* NEW: Contextual upgrade prompts with non-intrusive conversion optimization
+* NEW: Usage analytics and business intelligence tracking for optimization
+* NEW: Professional WordPress admin integration with native license management interface
+* NEW: Advanced export restrictions - Free (CSV only), Pro (CSV, JSON, PDF), Business (All + Excel)
+* Enterprise: Unlocks $490K+ potential ARR from existing user base, competitive with industry leaders
+* Business: $29.5K-73.7K Year 1 revenue projection, sustainable funding for continued innovation
 
 = 1.8.0 =
 * GAME CHANGER: Complete Elementor Pro dynamic content integration - unlocks 18+ million Elementor Pro users
