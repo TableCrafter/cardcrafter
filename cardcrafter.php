@@ -67,6 +67,9 @@ class CardCrafter
 
         // Elementor Integration
         add_action('plugins_loaded', array($this, 'init_elementor_integration'));
+        
+        // License Manager Integration
+        add_action('plugins_loaded', array($this, 'init_license_manager'));
     }
 
     /**
@@ -407,6 +410,10 @@ class CardCrafter
         $atts['layout'] = sanitize_key($atts['layout']);
         $atts['columns'] = absint($atts['columns']);
         $atts['items_per_page'] = min(100, max(1, absint($atts['items_per_page']))); // Limit between 1-100
+
+        // Apply license-based feature gating
+        $atts['items_per_page'] = apply_filters('cardcrafter_max_cards_per_page', $atts['items_per_page']);
+        $atts['posts_per_page'] = apply_filters('cardcrafter_max_cards_per_page', $atts['posts_per_page']);
 
         // WordPress Native Data Mode
         if (!empty($atts['wp_query']) || (!empty($atts['post_type']) && empty($atts['source']))) {
@@ -782,6 +789,16 @@ class CardCrafter
             require_once CARDCRAFTER_PATH . 'elementor/class-cardcrafter-elementor-manager.php';
             CardCrafter_Elementor_Manager::get_instance();
         }
+    }
+
+    /**
+     * Initialize License Manager
+     */
+    public function init_license_manager()
+    {
+        // Load license manager
+        require_once CARDCRAFTER_PATH . 'includes/class-cardcrafter-license-manager.php';
+        CardCrafter_License_Manager::get_instance();
     }
 }
 
