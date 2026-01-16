@@ -224,6 +224,51 @@
         perPageWrapper.appendChild(perPageSelect);
         toolbar.appendChild(perPageWrapper);
 
+        // Export Dropdown
+        var exportWrapper = this.createEl('div', 'cardcrafter-export-wrapper');
+        var exportButton = this.createEl('button', 'cardcrafter-export-button');
+        exportButton.textContent = 'Export Data';
+        exportButton.type = 'button';
+        
+        var exportDropdown = this.createEl('div', 'cardcrafter-export-dropdown');
+        exportDropdown.style.display = 'none';
+        
+        var exportOptions = [
+            { value: 'csv', text: 'Export as CSV', icon: '📊' },
+            { value: 'json', text: 'Export as JSON', icon: '📄' },
+            { value: 'pdf', text: 'Export as PDF', icon: '📋' }
+        ];
+
+        exportOptions.forEach(function(opt) {
+            var exportItem = self.createEl('button', 'cardcrafter-export-item');
+            exportItem.innerHTML = opt.icon + ' ' + opt.text;
+            exportItem.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                self.exportData(opt.value);
+                exportDropdown.style.display = 'none';
+            });
+            exportDropdown.appendChild(exportItem);
+        });
+
+        exportButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isVisible = exportDropdown.style.display === 'block';
+            exportDropdown.style.display = isVisible ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!exportWrapper.contains(e.target)) {
+                exportDropdown.style.display = 'none';
+            }
+        });
+
+        exportWrapper.appendChild(exportButton);
+        exportWrapper.appendChild(exportDropdown);
+        toolbar.appendChild(exportWrapper);
+
         this.container.appendChild(toolbar);
     };
 
@@ -554,6 +599,268 @@
         card.appendChild(cardInner);
 
         return card;
+    };
+
+    /**
+     * Export Data in Various Formats
+     */
+    CardCrafter.prototype.exportData = function (format) {
+        var self = this;
+        var exportData = this.prepareExportData();
+        var filename = this.generateFilename(format);
+        
+        try {
+            switch (format) {
+                case 'csv':
+                    this.exportAsCSV(exportData, filename);
+                    break;
+                case 'json':
+                    this.exportAsJSON(exportData, filename);
+                    break;
+                case 'pdf':
+                    this.exportAsPDF(exportData, filename);
+                    break;
+                default:
+                    throw new Error('Unsupported export format: ' + format);
+            }
+            
+            // Track export for analytics
+            this.trackExport(format, exportData.length);
+            
+        } catch (error) {
+            console.error('CardCrafter Export Error:', error);
+            this.showExportError(error.message);
+        }
+    };
+
+    /**
+     * Prepare Data for Export
+     */
+    CardCrafter.prototype.prepareExportData = function () {
+        var self = this;
+        var fields = this.options.fields;
+        
+        // Use filtered items (respects current search/sort)
+        return this.filteredItems.map(function(item, index) {
+            var exportItem = {};
+            
+            // Standard fields
+            exportItem.title = self.getNestedValue(item, fields.title) || 'Untitled';
+            exportItem.subtitle = self.getNestedValue(item, fields.subtitle) || '';
+            exportItem.description = self.getNestedValue(item, fields.description) || '';
+            exportItem.link = self.getNestedValue(item, fields.link) || '';
+            exportItem.image = self.getNestedValue(item, fields.image) || '';
+            
+            // Include additional data fields (like WordPress data)
+            if (item.id) exportItem.id = item.id;
+            if (item.post_type) exportItem.post_type = item.post_type;
+            if (item.author) exportItem.author = item.author;
+            if (item.date) exportItem.date = item.date;
+            
+            // Include any custom fields
+            for (var key in item) {
+                if (item.hasOwnProperty(key) && 
+                    !exportItem.hasOwnProperty(key) && 
+                    key !== '_searchableText' &&
+                    !key.startsWith('_')) {
+                    exportItem[key] = item[key];
+                }
+            }
+            
+            return exportItem;
+        });
+    };
+
+    /**
+     * Export as CSV
+     */
+    CardCrafter.prototype.exportAsCSV = function (data, filename) {
+        if (!data.length) {
+            throw new Error('No data to export');
+        }
+        
+        // Get all unique keys from all items
+        var allKeys = {};
+        data.forEach(function(item) {
+            Object.keys(item).forEach(function(key) {
+                allKeys[key] = true;
+            });
+        });
+        
+        var headers = Object.keys(allKeys);
+        var csvContent = headers.map(this.escapeCSVField).join(',') + '\n';
+        
+        data.forEach(function(item) {
+            var row = headers.map(function(header) {
+                var value = item[header] || '';
+                return this.escapeCSVField(value);
+            }.bind(this));
+            csvContent += row.join(',') + '\n';
+        }.bind(this));
+        
+        this.downloadFile(csvContent, filename, 'text/csv');
+    };
+
+    /**
+     * Export as JSON
+     */
+    CardCrafter.prototype.exportAsJSON = function (data, filename) {
+        var jsonContent = JSON.stringify({
+            metadata: {
+                exported_at: new Date().toISOString(),
+                total_items: data.length,
+                source: this.options.source || 'WordPress',
+                layout: this.options.layout,
+                cardcrafter_version: '1.7.0'
+            },
+            items: data
+        }, null, 2);
+        
+        this.downloadFile(jsonContent, filename, 'application/json');
+    };
+
+    /**
+     * Export as PDF (Simple text-based PDF)
+     */
+    CardCrafter.prototype.exportAsPDF = function (data, filename) {
+        // Simple PDF creation without external libraries
+        // This creates a basic text-based PDF structure
+        var pdfContent = this.createSimplePDF(data);
+        this.downloadFile(pdfContent, filename, 'application/pdf');
+    };
+
+    /**
+     * Create Simple PDF Content
+     */
+    CardCrafter.prototype.createSimplePDF = function (data) {
+        // Basic PDF structure - for production, would use a proper PDF library
+        var content = '%PDF-1.4\n';
+        content += '1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n';
+        content += '2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n';
+        content += '3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj\n';
+        content += '4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\n';
+        
+        var text = 'CardCrafter Export - ' + new Date().toLocaleDateString() + '\\n\\n';
+        
+        data.forEach(function(item, index) {
+            text += (index + 1) + '. ' + item.title + '\\n';
+            if (item.subtitle) text += '   ' + item.subtitle + '\\n';
+            if (item.description) text += '   ' + item.description.substring(0, 100) + '...\\n';
+            if (item.link) text += '   URL: ' + item.link + '\\n';
+            text += '\\n';
+        });
+        
+        content += '5 0 obj<</Length ' + text.length + '>>stream\nBT /F1 12 Tf 50 750 Td (' + text + ') Tj ET\nendstream\nendobj\n';
+        content += 'xref\n0 6\n0000000000 65535 f \n0000000010 00000 n \n0000000053 00000 n \n0000000100 00000 n \n0000000200 00000 n \n0000000300 00000 n \n';
+        content += 'trailer<</Size 6/Root 1 0 R>>\nstartxref\n400\n%%EOF';
+        
+        return content;
+    };
+
+    /**
+     * Escape CSV Field
+     */
+    CardCrafter.prototype.escapeCSVField = function (field) {
+        if (typeof field !== 'string') {
+            field = String(field);
+        }
+        
+        // Escape quotes and wrap in quotes if necessary
+        if (field.includes('"') || field.includes(',') || field.includes('\n')) {
+            field = '"' + field.replace(/"/g, '""') + '"';
+        }
+        
+        return field;
+    };
+
+    /**
+     * Generate Export Filename
+     */
+    CardCrafter.prototype.generateFilename = function (format) {
+        var timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+        var baseName = 'cardcrafter-export-' + timestamp;
+        return baseName + '.' + format;
+    };
+
+    /**
+     * Download File
+     */
+    CardCrafter.prototype.downloadFile = function (content, filename, mimeType) {
+        var blob = new Blob([content], { type: mimeType });
+        var url = window.URL.createObjectURL(blob);
+        
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.style.display = 'none';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up the blob URL
+        window.URL.revokeObjectURL(url);
+        
+        // Show success message
+        this.showExportSuccess(filename, mimeType);
+    };
+
+    /**
+     * Track Export for Analytics
+     */
+    CardCrafter.prototype.trackExport = function (format, itemCount) {
+        // Track export usage for future improvements
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'cardcrafter_export', {
+                export_format: format,
+                item_count: itemCount
+            });
+        }
+    };
+
+    /**
+     * Show Export Success Message
+     */
+    CardCrafter.prototype.showExportSuccess = function (filename, mimeType) {
+        var message = document.createElement('div');
+        message.className = 'cardcrafter-export-success';
+        message.innerHTML = '✅ Successfully exported ' + filename;
+        message.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 6px; z-index: 9999; font-weight: 500;';
+        
+        document.body.appendChild(message);
+        
+        setTimeout(function() {
+            if (message.parentNode) {
+                message.parentNode.removeChild(message);
+            }
+        }, 3000);
+    };
+
+    /**
+     * Show Export Error Message
+     */
+    CardCrafter.prototype.showExportError = function (errorMsg) {
+        var message = document.createElement('div');
+        message.className = 'cardcrafter-export-error';
+        message.innerHTML = '❌ Export failed: ' + errorMsg;
+        message.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #dc2626; color: white; padding: 12px 20px; border-radius: 6px; z-index: 9999; font-weight: 500;';
+        
+        document.body.appendChild(message);
+        
+        setTimeout(function() {
+            if (message.parentNode) {
+                message.parentNode.removeChild(message);
+            }
+        }, 5000);
+    };
+
+    /**
+     * Process WordPress or external data
+     */
+    CardCrafter.prototype.processData = function (data) {
+        this.items = Array.isArray(data) ? data : (data.items || data.data || data.results || [data]);
+        this.filteredItems = this.items.slice();
+        this.renderLayout();
     };
 
     /**
