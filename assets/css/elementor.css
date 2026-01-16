@@ -1,0 +1,400 @@
+/**
+ * CardCrafter Elementor Integration Styles
+ * 
+ * Elementor-specific styling for seamless integration with Elementor editor and frontend.
+ * Ensures CardCrafter widgets work perfectly within the Elementor ecosystem.
+ * 
+ * @version 1.8.0
+ */
+
+/* ==========================================================================
+   Elementor Widget Container
+   ========================================================================== */
+
+.cardcrafter-elementor-widget {
+    width: 100%;
+    position: relative;
+}
+
+.elementor-widget-cardcrafter-data-grids {
+    width: 100%;
+}
+
+.elementor-widget-cardcrafter-data-grids .cardcrafter-container {
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Elementor Editor Preview Styles
+   ========================================================================== */
+
+.cardcrafter-elementor-preview {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.cardcrafter-elementor-preview .cardcrafter-demo-banner {
+    margin-bottom: 20px;
+}
+
+.cardcrafter-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.cardcrafter-preview-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.cardcrafter-preview-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.cardcrafter-preview-image {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.cardcrafter-preview-image::after {
+    content: "📷";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+}
+
+.cardcrafter-preview-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.cardcrafter-preview-subtitle {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.cardcrafter-preview-description {
+    margin: 0;
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   Elementor Editor Integration
+   ========================================================================== */
+
+/* Widget icon styling in Elementor panel */
+.elementor-element .elementor-widget-icon {
+    color: #3b82f6;
+}
+
+.elementor-panel .elementor-control-cardcrafter_data_mode .elementor-control-field-description {
+    background: #f0f9ff;
+    border-left: 3px solid #3b82f6;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/* Custom control styling */
+.elementor-control-cardcrafter_layout .elementor-control-input-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.elementor-control-cardcrafter_layout .elementor-control-input-wrapper select {
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    padding: 8px 12px;
+}
+
+/* Advanced controls section */
+.elementor-control-section_cardcrafter_advanced .elementor-control-field {
+    border-left: 3px solid #10b981;
+    padding-left: 12px;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   Responsive Grid Adjustments for Elementor
+   ========================================================================== */
+
+/* Ensure proper grid behavior within Elementor columns */
+.elementor-column .cardcrafter-grid {
+    width: 100%;
+    margin: 0;
+}
+
+/* Handle Elementor's responsive breakpoints */
+@media (max-width: 1024px) {
+    .elementor-widget-cardcrafter-data-grids .cardcrafter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .elementor-widget-cardcrafter-data-grids .cardcrafter-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cardcrafter-preview-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Elementor Section Background Compatibility  
+   ========================================================================== */
+
+/* Ensure cards work well with Elementor section backgrounds */
+.elementor-section[data-settings*="background"] .cardcrafter-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.elementor-section.elementor-section-dark .cardcrafter-card {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+.elementor-section.elementor-section-dark .cardcrafter-card-title {
+    color: white;
+}
+
+.elementor-section.elementor-section-dark .cardcrafter-card-subtitle {
+    color: #d1d5db;
+}
+
+.elementor-section.elementor-section-dark .cardcrafter-card-description {
+    color: #9ca3af;
+}
+
+/* ==========================================================================
+   Elementor Animation Compatibility
+   ========================================================================== */
+
+/* Ensure CardCrafter cards work with Elementor entrance animations */
+.elementor-invisible .cardcrafter-card {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.elementor-animation-grow .cardcrafter-card {
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
+
+.elementor-animation-grow.elementor-invisible .cardcrafter-card {
+    transform: scale(0.8);
+}
+
+.elementor-animation-fade-in-up .cardcrafter-card {
+    transform: translateY(0);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.elementor-animation-fade-in-up.elementor-invisible .cardcrafter-card {
+    transform: translateY(30px);
+    opacity: 0;
+}
+
+/* ==========================================================================
+   Elementor Pro Integration
+   ========================================================================== */
+
+/* Theme Builder compatibility */
+.elementor-theme-builder .cardcrafter-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Popup compatibility */
+.elementor-popup-modal .cardcrafter-grid {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Custom CSS for Elementor Pro Motion Effects */
+.elementor-motion-effects-element .cardcrafter-card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+/* ==========================================================================
+   Elementor Global Styles Integration
+   ========================================================================== */
+
+/* Respect Elementor's global color palette */
+.elementor-kit-* .cardcrafter-card-title {
+    color: var(--e-global-color-primary, #1f2937);
+}
+
+.elementor-kit-* .cardcrafter-card-subtitle {
+    color: var(--e-global-color-secondary, #6b7280);
+}
+
+.elementor-kit-* .cardcrafter-card-link {
+    color: var(--e-global-color-accent, #3b82f6);
+}
+
+.elementor-kit-* .cardcrafter-card-link:hover {
+    color: var(--e-global-color-accent-hover, #2563eb);
+}
+
+/* Respect Elementor's global typography */
+.elementor-kit-* .cardcrafter-card-title {
+    font-family: var(--e-global-typography-primary-font-family, inherit);
+    font-weight: var(--e-global-typography-primary-font-weight, 600);
+}
+
+.elementor-kit-* .cardcrafter-card-subtitle {
+    font-family: var(--e-global-typography-secondary-font-family, inherit);
+    font-weight: var(--e-global-typography-secondary-font-weight, 500);
+}
+
+.elementor-kit-* .cardcrafter-card-description {
+    font-family: var(--e-global-typography-text-font-family, inherit);
+    font-weight: var(--e-global-typography-text-font-weight, 400);
+}
+
+/* ==========================================================================
+   Elementor Editor Loading States
+   ========================================================================== */
+
+.elementor-loading .cardcrafter-elementor-widget {
+    position: relative;
+    min-height: 200px;
+}
+
+.elementor-loading .cardcrafter-elementor-widget::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: cardcrafter-loading 1.5s infinite;
+    border-radius: 8px;
+}
+
+@keyframes cardcrafter-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ==========================================================================
+   Elementor Inspector Compatibility
+   ========================================================================== */
+
+.elementor-editor-active .cardcrafter-card {
+    cursor: pointer;
+    position: relative;
+}
+
+.elementor-editor-active .cardcrafter-card:hover {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.elementor-editor-active .cardcrafter-card::after {
+    content: "CardCrafter Item";
+    position: absolute;
+    top: -30px;
+    left: 0;
+    background: #3b82f6;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.elementor-editor-active .cardcrafter-card:hover::after {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Performance Optimizations for Elementor
+   ========================================================================== */
+
+/* GPU acceleration for smooth animations */
+.elementor-widget-cardcrafter-data-grids .cardcrafter-card {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Optimize for Elementor's intersection observer */
+.elementor-invisible .cardcrafter-container {
+    contain: layout;
+}
+
+/* Reduce paint complexity during Elementor animations */
+.elementor-animation-* .cardcrafter-card {
+    contain: paint;
+}
+
+/* ==========================================================================
+   Dark Mode Support for Elementor
+   ========================================================================== */
+
+[data-elementor-device-mode="tablet"] .cardcrafter-grid,
+[data-elementor-device-mode="mobile"] .cardcrafter-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Elementor Dark Mode */
+.elementor-editor-dark .cardcrafter-elementor-preview {
+    background: #2a2a2a;
+    border-color: #404040;
+}
+
+.elementor-editor-dark .cardcrafter-preview-card {
+    background: #1e1e1e;
+    border-color: #404040;
+    color: #ffffff;
+}
+
+.elementor-editor-dark .cardcrafter-preview-card h3 {
+    color: #ffffff;
+}
+
+.elementor-editor-dark .cardcrafter-preview-subtitle {
+    color: #cccccc;
+}
+
+.elementor-editor-dark .cardcrafter-preview-description {
+    color: #aaaaaa;
+}

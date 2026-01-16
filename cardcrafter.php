@@ -64,6 +64,9 @@ class CardCrafter
         if (!wp_next_scheduled('cardcrafter_refresher_cron')) {
             wp_schedule_event(time(), 'hourly', 'cardcrafter_refresher_cron');
         }
+
+        // Elementor Integration
+        add_action('plugins_loaded', array($this, 'init_elementor_integration'));
     }
 
     /**
@@ -766,6 +769,19 @@ class CardCrafter
             '<text fill="#888" font-family="sans-serif" font-size="24" text-anchor="middle" x="200" y="160">' .
             esc_html(substr($title, 0, 20)) . '</text></svg>';
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
+    }
+
+    /**
+     * Initialize Elementor integration
+     */
+    public function init_elementor_integration()
+    {
+        // Check if Elementor is loaded
+        if (did_action('elementor/loaded')) {
+            // Load Elementor manager
+            require_once CARDCRAFTER_PATH . 'elementor/class-cardcrafter-elementor-manager.php';
+            CardCrafter_Elementor_Manager::get_instance();
+        }
     }
 }
 
