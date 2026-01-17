@@ -3,7 +3,7 @@
  * Plugin Name: CardCrafter – Data-Driven Card Grids
  * Plugin URI: https://github.com/TableCrafter/cardcrafter-data-grids
  * Description: Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
- * Version: 1.11.0
+ * Version: 1.12.0
  * Author: fahdi
  * Author URI: https://github.com/TableCrafter
  * License: GPLv2 or later
@@ -20,7 +20,7 @@ Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / c
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 */
 
-define('CARDCRAFTER_VERSION', '1.11.0');
+define('CARDCRAFTER_VERSION', '1.12.0');
 define('CARDCRAFTER_URL', plugin_dir_url(__FILE__));
 define('CARDCRAFTER_PATH', plugin_dir_path(__FILE__));
 
@@ -63,6 +63,9 @@ class CardCrafter
         // Secure Proxy Handlers
         add_action('wp_ajax_cardcrafter_proxy_fetch', array($this, 'ajax_proxy_fetch'));
         add_action('wp_ajax_nopriv_cardcrafter_proxy_fetch', array($this, 'ajax_proxy_fetch'));
+        
+        // WordPress Posts Preview Handler
+        add_action('wp_ajax_cardcrafter_wp_posts_preview', array($this, 'ajax_wp_posts_preview'));
 
         // Background Caching
         add_action('cardcrafter_refresher_cron', array($this, 'automated_cache_refresh'));
@@ -949,6 +952,61 @@ class CardCrafter
         $this->track_url($url);
 
         wp_send_json_success($data);
+    }
+
+    /**
+     * AJAX handler for WordPress posts preview
+     */
+    public function ajax_wp_posts_preview()
+    {
+        // Verify nonce
+        $nonce = isset($_REQUEST['nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['nonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'cardcrafter_proxy_nonce')) {
+            wp_send_json_error('Security check failed.');
+        }
+
+        // Get recent posts (with cache busting)
+        $posts = get_posts(array(
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 12,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'cache_results' => false, // Disable caching for fresh results
+            'no_found_rows' => true
+        ));
+
+        if (empty($posts)) {
+            wp_send_json_error('No WordPress posts found.');
+        }
+
+        // Convert WordPress posts to CardCrafter data format
+        $card_data = array();
+        foreach ($posts as $post) {
+            $featured_image = get_the_post_thumbnail_url($post->ID, 'medium');
+            
+            // Fallback to full size if medium doesn't exist
+            if (!$featured_image) {
+                $featured_image = get_the_post_thumbnail_url($post->ID, 'full');
+            }
+            
+            $card_item = array(
+                'id' => $post->ID,
+                'title' => get_the_title($post->ID),
+                'subtitle' => get_the_date('F j, Y', $post->ID),
+                'description' => wp_trim_words(get_the_excerpt($post->ID), 20, '...'),
+                'link' => get_permalink($post->ID),
+                'image' => $featured_image ?: $this->get_placeholder_image(get_the_title($post->ID)),
+                'post_type' => $post->post_type,
+                'author' => get_the_author_meta('display_name', $post->post_author),
+                'debug_thumbnail_id' => get_post_thumbnail_id($post->ID), // Debug info
+                'debug_image_url' => $featured_image // Debug info
+            );
+
+            $card_data[] = $card_item;
+        }
+
+        wp_send_json_success($card_data);
     }
 
     /**

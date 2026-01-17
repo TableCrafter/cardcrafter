@@ -116,9 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const cardId = 'cardcrafter-preview-' + Date.now();
             container.innerHTML = `<div id="${cardId}" class="cardcrafter-container">${cardcrafterAdmin.i18n.loading}</div>`;
 
-            // Use the secure proxy for admin previews too
-            const proxyUrl = `${cardcrafterAdmin.ajaxurl}?action=cardcrafter_proxy_fetch&url=${encodeURIComponent(url)}&nonce=${cardcrafterAdmin.nonce}`;
-
             // Get additional options
             const enableSearch = document.getElementById('cc-enable-search');
             const enableFilters = document.getElementById('cc-enable-filters');
@@ -130,9 +127,19 @@ document.addEventListener('DOMContentLoaded', function () {
             const enablePagination = document.getElementById('cc-enable-pagination');
             const itemsPerPage = document.getElementById('cc-items-per-page');
 
+            // Determine source URL based on whether it's wp_posts or external URL
+            let sourceUrl;
+            if (url === 'wp_posts') {
+                // For WordPress posts, use a special AJAX endpoint
+                sourceUrl = `${cardcrafterAdmin.ajaxurl}?action=cardcrafter_wp_posts_preview&nonce=${cardcrafterAdmin.nonce}`;
+            } else {
+                // For external URLs, use the secure proxy
+                sourceUrl = `${cardcrafterAdmin.ajaxurl}?action=cardcrafter_proxy_fetch&url=${encodeURIComponent(url)}&nonce=${cardcrafterAdmin.nonce}`;
+            }
+
             new CardCrafter({
                 selector: '#' + cardId,
-                source: proxyUrl,
+                source: sourceUrl,
                 layout: layoutSelect.value,
                 columns: parseInt(columnsSelect.value),
                 search: enableSearch ? enableSearch.checked : true,
@@ -149,6 +156,19 @@ document.addEventListener('DOMContentLoaded', function () {
             container.innerHTML = `<div class="notice notice-error inline"><p>${cardcrafterAdmin.i18n.libNotLoaded}</p></div>`;
         }
     });
+
+    // Use WP Posts functionality
+    const wpPostsBtn = document.getElementById('cc-wp-posts-btn');
+    if (wpPostsBtn) {
+        wpPostsBtn.addEventListener('click', function() {
+            // Set the source to use WordPress posts
+            urlInput.value = 'wp_posts';
+            updateShortcode();
+            
+            // Auto-trigger preview
+            previewBtn.click();
+        });
+    }
 
     // Copy shortcode functionality
     copyBtn.addEventListener('click', function () {

@@ -4,17 +4,19 @@ Tags: json, cards, grid, data, layout
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Transform JSON data into beautiful, responsive card grids. Perfect for team directories, product showcases, and portfolio displays.
+Transform JSON data and WordPress posts into beautiful, responsive card grids. Perfect for team directories, product showcases, portfolio displays, and blog content.
 
 == Description ==
 
 Don't take our word for it, try CardCrafter live. **[Full-featured demo](https://tastewp.com/plugins/cardcrafter-data-grids)** on a real WordPress site. No signup, no download, no risk.
 
-**CardCrafter** is the #1 WordPress plugin for displaying data as beautiful card grids. Transform your WordPress posts, JSON data, and custom content into professional, responsive card layouts. No coding required.
+**CardCrafter** is the #1 WordPress plugin for displaying data as beautiful card grids. Transform your **WordPress posts**, JSON data, and custom content into professional, responsive card layouts. No coding required.
+
+🆕 **NEW in v1.12.0:** Native WordPress Posts integration! Display your blog posts, pages, or custom post types as stunning card grids with featured images, excerpts, and automatic formatting.
 
 **Perfect for:**
 • **Team Directories** - Display staff members with photos and bios
@@ -37,6 +39,7 @@ Don't take our word for it, try CardCrafter live. **[Full-featured demo](https:/
 ### 🚀 Key Features
 
 *   **🧱 Gutenberg Block:** Native WordPress block editor support with visual configuration.
+*   **📝 WordPress Posts Grid:** Transform your blog posts into beautiful card layouts with one click.
 *   **Instant Search & Sort:** Users can filter and sort cards instantly (Client-side).
 *   **Multiple Layouts:** Grid, Masonry, and List views to suit your content.
 *   **Customizable Columns:** Display 2, 3, or 4 cards per row.
@@ -165,6 +168,16 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
+
+= 1.12.0 =
+* MAJOR: Native WordPress Posts integration - display blog posts as beautiful card grids
+* NEW: "Use WP Posts" button in admin for one-click WordPress content integration
+* NEW: Automatic featured image, title, excerpt, and permalink extraction from WordPress posts
+* NEW: Live preview of WordPress posts with all display options (search, filters, pagination)
+* IMPROVED: Enhanced caching system with automatic cache clearing for fresh data
+* IMPROVED: Debug mode for troubleshooting image and thumbnail issues
+* ACCESSIBILITY: WordPress posts automatically include proper alt text and semantic structure
+* PERFORMANCE: Optimized queries with cache-busting for real-time preview updates
 
 = 1.11.0 =
 * MAJOR: Enhanced admin UI with modern design and comprehensive display options

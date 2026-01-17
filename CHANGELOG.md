@@ -2,6 +2,27 @@
 
 All notable changes to CardCrafter will be documented in this file.
 
+## [1.12.0] - 2026-01-17
+
+### 🆕 MAJOR: Native WordPress Posts Integration
+- **NEW**: One-click WordPress Posts grid functionality with "Use WP Posts" button
+- **NEW**: Automatic featured image, title, excerpt, and permalink extraction from WordPress posts
+- **NEW**: Live preview of WordPress posts with all display options (search, filters, pagination)
+- **NEW**: Enhanced AJAX endpoint `cardcrafter_wp_posts_preview` for real-time WordPress content
+- **NEW**: Automatic cache clearing and debug mode for troubleshooting image issues
+
+### 🔧 Technical Improvements
+- **IMPROVED**: Enhanced caching system with `cache_results => false` for fresh data
+- **IMPROVED**: Fallback image handling (medium → full size → placeholder)
+- **IMPROVED**: Debug information in AJAX responses for troubleshooting
+- **PERFORMANCE**: Optimized WordPress queries with cache-busting mechanisms
+- **ACCESSIBILITY**: WordPress posts include proper semantic structure and alt text
+
+### 🎯 User Experience
+- **ENHANCED**: Admin interface now supports both JSON data and WordPress posts seamlessly
+- **STREAMLINED**: Single-click integration for existing WordPress content
+- **FLEXIBLE**: All existing display options work with WordPress posts (search, filters, export, etc.)
+
 ## [1.9.0] - 2026-01-17
 
 ### 💰 REVOLUTIONARY: Complete Freemium Business Model Implementation
