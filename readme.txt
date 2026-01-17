@@ -4,7 +4,7 @@ Tags: json, cards, grid, data, layout
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.9.0
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,16 @@ CardCrafter works with any publicly accessible JSON endpoint. The API must allow
 10. **Mobile Responsive Design** - Cards automatically adapt to smaller screens with optimized spacing, typography, and touch-friendly interactions.
 
 == Changelog ==
+
+= 1.10.0 =
+* MAJOR: Ultra-modern welcome screen with clean, flat design architecture
+* NEW: Semantic HTML5 structure eliminates complex div nesting for better performance
+* ENHANCED: Modern Tailwind/shadcn inspired design principles with proper spacing
+* IMPROVED: WordPress default color scheme integration for consistent admin experience
+* FIXED: Interactive demo loading for all datasets (Team, Products, Portfolio)
+* STREAMLINED: Disabled license management interface for cleaner user experience
+* OPTIMIZED: Responsive grid layouts with improved mobile experience
+* ACCESSIBILITY: Better contrast ratios and semantic markup for screen readers
 
 = 1.9.0 =
 * REVOLUTIONARY: Complete freemium business model implementation - sustainable revenue generation unlocked
