@@ -104,12 +104,12 @@ class CardCrafter_Elementor_Widget extends Widget_Base
             [
                 'label' => __('Data Source Type', 'cardcrafter-data-grids'),
                 'type' => Controls_Manager::SELECT,
-                'default' => 'demo',
+                'default' => 'wordpress',
                 'options' => [
-                    'demo' => __('Demo Data (Team Directory)', 'cardcrafter-data-grids'),
                     'wordpress' => __('WordPress Posts', 'cardcrafter-data-grids'),
                     'json_url' => __('External JSON API', 'cardcrafter-data-grids'),
                     'custom_json' => __('Custom JSON Data', 'cardcrafter-data-grids'),
+                    'demo' => __('Demo Data (Team Directory)', 'cardcrafter-data-grids'),
                 ],
                 'description' => __('Choose your data source. Demo data provides instant preview.', 'cardcrafter-data-grids'),
             ]
@@ -723,6 +723,12 @@ class CardCrafter_Elementor_Widget extends Widget_Base
      */
     protected function render()
     {
+        // Enqueue required scripts and styles
+        wp_enqueue_script('cardcrafter-frontend');
+        wp_enqueue_script('cardcrafter-elementor-frontend');
+        wp_enqueue_style('cardcrafter-style');
+        wp_enqueue_style('cardcrafter-elementor-style');
+        
         $settings = $this->get_settings_for_display();
         
         // Generate unique container ID
@@ -770,9 +776,14 @@ class CardCrafter_Elementor_Widget extends Widget_Base
                 break;
                 
             case 'demo':
-            default:
                 $config['wpDataMode'] = true;
                 $config['data'] = $this->get_demo_data();
+                break;
+                
+            case 'wordpress':
+            default:
+                $config['wpDataMode'] = true;
+                $config['data'] = $this->get_wordpress_data($settings);
                 break;
         }
 
@@ -784,8 +795,8 @@ class CardCrafter_Elementor_Widget extends Widget_Base
      */
     private function render_widget_container($container_id, $config, $settings)
     {
-        // Add demo banner for demo mode
-        if (($settings['data_mode'] ?? 'demo') === 'demo') {
+        // Add demo banner for demo mode only
+        if (($settings['data_mode'] ?? 'wordpress') === 'demo') {
             $this->render_demo_banner();
         }
 
@@ -1169,11 +1180,30 @@ class CardCrafter_Elementor_Widget extends Widget_Base
     protected function content_template()
     {
         ?>
+        <#
+        var data_mode = settings.data_mode || 'wordpress';
+        var badge_text = 'ELEMENTOR PREVIEW';
+        var description = 'CardCrafter widget configured. Live preview available on frontend.';
+        
+        if (data_mode === 'wordpress') {
+            badge_text = 'WORDPRESS POSTS';
+            description = 'Displaying WordPress posts as cards | Layout: ' + (settings.layout || 'grid') + ' | Columns: ' + (settings.columns || 3);
+        } else if (data_mode === 'json_url') {
+            badge_text = 'JSON DATA';
+            description = 'External JSON source: ' + (settings.json_url ? settings.json_url.url : 'Not configured');
+        } else if (data_mode === 'custom_json') {
+            badge_text = 'CUSTOM JSON';
+            description = 'Using custom JSON data for card display';
+        } else if (data_mode === 'demo') {
+            badge_text = 'DEMO DATA';
+            description = 'Showing sample team directory data';
+        }
+        #>
         <div class="cardcrafter-elementor-preview">
             <div class="cardcrafter-demo-banner">
                 <div class="cardcrafter-demo-content">
-                    <span class="cardcrafter-demo-badge">ELEMENTOR PREVIEW</span>
-                    <p>CardCrafter widget configured. Live preview available on frontend.</p>
+                    <span class="cardcrafter-demo-badge">{{ badge_text }}</span>
+                    <p>{{ description }}</p>
                 </div>
             </div>
             <div class="cardcrafter-preview-grid">
