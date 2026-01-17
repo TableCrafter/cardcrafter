@@ -293,6 +293,8 @@ $portfolio_url = CARDCRAFTER_URL . 'demo-data/portfolio.json';
             const columns = $('#columns').val();
             const enableSearch = $('#search').is(':checked');
             
+            console.log('Loading demo with:', { dataset, layout, columns, enableSearch });
+            
             container.html('<div class="cc-loading"><div class="cc-spinner"></div><p>Loading cards...</p></div>');
             
             if (typeof window.CardCrafter === 'undefined') {
@@ -300,8 +302,19 @@ $portfolio_url = CARDCRAFTER_URL . 'demo-data/portfolio.json';
                 return;
             }
             
-            container.attr('id', 'demo-' + Date.now());
-            const containerId = '#' + container.attr('id');
+            // Destroy previous instance first
+            if (demoInstance) {
+                try {
+                    demoInstance.destroy();
+                } catch(e) {
+                    console.log('Error destroying previous instance:', e);
+                }
+                demoInstance = null;
+            }
+            
+            // Clear container and use consistent ID
+            container.empty();
+            const containerId = '#demo-container';
             
             const config = {
                 selector: containerId,
@@ -319,27 +332,38 @@ $portfolio_url = CARDCRAFTER_URL . 'demo-data/portfolio.json';
                 }
             };
             
-            if (demoInstance) {
-                demoInstance.destroy();
-            }
+            console.log('Creating CardCrafter with config:', config);
             
-            container.empty();
-            demoInstance = new CardCrafter(config);
+            try {
+                demoInstance = new CardCrafter(config);
+                console.log('CardCrafter instance created successfully');
+            } catch(e) {
+                console.error('Error creating CardCrafter instance:', e);
+                container.html('<div class="cc-loading"><p style="color: #ef4444;">Error loading demo: ' + e.message + '</p></div>');
+            }
         }
         
         // Event handlers
-        $('#dataset, #layout, #columns, #search').on('change', loadDemo);
+        $('#dataset, #layout, #columns, #search').on('change', function() {
+            console.log('Form control changed:', this.id, this.value || this.checked);
+            loadDemo();
+        });
         
         // Sidebar demo links
         $('.demo-link').on('click', function(e) {
             e.preventDefault();
             const url = $(this).data('url');
+            console.log('Demo link clicked:', url);
             $('#dataset').val(url);
             loadDemo();
         });
         
         // Auto-load demo
-        setTimeout(loadDemo, 1000);
+        console.log('Setting up auto-load demo...');
+        setTimeout(function() {
+            console.log('Auto-loading demo...');
+            loadDemo();
+        }, 1000);
     });
     </script>
 </div>
