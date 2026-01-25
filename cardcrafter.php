@@ -564,7 +564,7 @@ class CardCrafter
             var selectedDemo = '<?php echo esc_js(get_option('cc_preferred_demo_type', 'team')); ?>';
             
             // Show onboarding modal immediately for new users
-            if (currentStep === 0) {
+            if (currentStep === 0 && $('.cc-onboarding-overlay').length) {
                 $('#cc-onboarding-overlay').show();
                 showStep(1);
             }
@@ -607,10 +607,16 @@ class CardCrafter
                 
                 // Update the demo URL in the admin interface
                 var demoUrl = '<?php echo CARDCRAFTER_URL; ?>demo-data/' + selectedDemo + '.json';
-                $('#cc-source-url').val(demoUrl);
-                
-                // Trigger preview to generate cards
-                $('#cc-preview-btn').click();
+                var urlInput = $('#cc-preview-url');
+                if (urlInput.length) {
+                    urlInput.val(demoUrl);
+                    
+                    // Trigger preview to generate cards
+                    var previewBtn = $('#cc-preview-btn');
+                    if (previewBtn.length) {
+                        previewBtn.click();
+                    }
+                }
                 
                 // Save demo preference
                 $.post(ajaxurl, {
@@ -704,11 +710,13 @@ class CardCrafter
                 });
                 
                 // Scroll to generated cards if they exist
-                if ($('.cardcrafter-container').length) {
-                    $('html, body').animate({
-                        scrollTop: $('.cardcrafter-container').offset().top - 100
-                    }, 500);
-                }
+                setTimeout(function() {
+                    if ($('.cardcrafter-container').length) {
+                        $('html, body').animate({
+                            scrollTop: $('.cardcrafter-container').offset().top - 100
+                        }, 500);
+                    }
+                }, 500);
             }
         });
         </script>

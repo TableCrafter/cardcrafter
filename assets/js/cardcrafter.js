@@ -119,6 +119,22 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok: ' + response.status);
                 }
+                
+                // Check if response is actually JSON by looking at content-type
+                var contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    // If not JSON, get text to see what we actually received
+                    return response.text().then(function(text) {
+                        if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+                            throw new Error('Received HTML page instead of JSON data. This usually indicates a WordPress error. Check WordPress error logs.');
+                        } else if (text.trim().startsWith('0')) {
+                            throw new Error('WordPress returned "0" - check if AJAX action is registered properly.');
+                        } else {
+                            throw new Error('Invalid JSON response. Received: ' + text.substring(0, 100) + '...');
+                        }
+                    });
+                }
+                
                 return response.json();
             })
             .then(function (response) {
