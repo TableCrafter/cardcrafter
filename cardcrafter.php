@@ -3,7 +3,7 @@
  * Plugin Name: CardCrafter – Data-Driven Card Grids
  * Plugin URI: https://github.com/TableCrafter/cardcrafter-data-grids
  * Description: Transform JSON data and WordPress posts into beautiful card grids. Perfect for teams, products, portfolios, and blogs.
- * Version: 1.13.1
+ * Version: 1.14.1
  * Author: fahdi
  * Author URI: https://github.com/TableCrafter
  * License: GPLv2 or later
@@ -20,7 +20,7 @@ Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / c
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 */
 
-define('CARDCRAFTER_VERSION', '1.13.1');
+define('CARDCRAFTER_VERSION', '1.14.1');
 define('CARDCRAFTER_URL', plugin_dir_url(__FILE__));
 define('CARDCRAFTER_PATH', plugin_dir_path(__FILE__));
 
@@ -78,6 +78,10 @@ class CardCrafter
         add_action('wp_ajax_cc_subscribe_lead', array($this, 'handle_lead_subscription'));
         add_action('wp_ajax_nopriv_cc_subscribe_lead', array($this, 'handle_lead_subscription'));
 
+        // Onboarding Progress Handlers
+        add_action('wp_ajax_cc_save_onboarding_progress', array($this, 'save_onboarding_progress'));
+        add_action('wp_ajax_cc_complete_first_card', array($this, 'complete_first_card'));
+
         // Elementor Integration
         add_action('plugins_loaded', array($this, 'init_elementor_integration'));
         
@@ -90,8 +94,15 @@ class CardCrafter
      */
     public static function activate()
     {
+        // Enhanced onboarding system
         add_option('cc_show_activation_notice', true);
         add_option('cc_do_activation_redirect', true);
+        add_option('cc_onboarding_step', 0);  // Track onboarding progress
+        add_option('cc_user_completed_first_card', false);  // Track success milestone
+        add_option('cc_onboarding_start_time', current_time('timestamp'));  // Track time to value
+        
+        // Set default demo preference for new users
+        add_option('cc_preferred_demo_type', 'team');  // Default to team directory demo
     }
 
     /**
@@ -114,7 +125,7 @@ class CardCrafter
     }
 
     /**
-     * Show activation notice on admin page.
+     * Show interactive onboarding modal on first activation
      */
     public function show_activation_notice()
     {
@@ -127,19 +138,586 @@ class CardCrafter
             return;
         }
         
+        $onboarding_step = get_option('cc_onboarding_step', 0);
+        $has_completed_first_card = get_option('cc_user_completed_first_card', false);
+        
         ?>
-        <div class="notice notice-success is-dismissible" id="cc-activation-notice">
-            <p><strong>🎉 CardCrafter Activated Successfully!</strong></p>
-            <p>Welcome to CardCrafter! Try the Quick Start demos below to see how easy it is to create beautiful card layouts from any JSON data source.</p>
+        <!-- Enhanced Onboarding Modal -->
+        <div id="cc-onboarding-overlay" class="cc-onboarding-overlay" style="display: none;">
+            <div class="cc-onboarding-modal">
+                
+                <!-- Step 1: Welcome -->
+                <div id="cc-onboarding-step-1" class="cc-onboarding-step" data-step="1">
+                    <div class="cc-onboarding-header">
+                        <div class="cc-onboarding-icon">🎉</div>
+                        <h2>Welcome to CardCrafter!</h2>
+                        <p>Let's get you set up with your first beautiful card display in under 2 minutes.</p>
+                    </div>
+                    <div class="cc-onboarding-content">
+                        <div class="cc-value-props">
+                            <div class="cc-value-prop">
+                                <span class="cc-prop-icon">⚡</span>
+                                <span>Transform any data into beautiful cards</span>
+                            </div>
+                            <div class="cc-value-prop">
+                                <span class="cc-prop-icon">📱</span>
+                                <span>Fully responsive on all devices</span>
+                            </div>
+                            <div class="cc-value-prop">
+                                <span class="cc-prop-icon">🔍</span>
+                                <span>Built-in search and filtering</span>
+                            </div>
+                        </div>
+                        <div class="cc-onboarding-stats">
+                            <small>Join 10,000+ websites using CardCrafter</small>
+                        </div>
+                    </div>
+                    <div class="cc-onboarding-actions">
+                        <button class="button button-primary button-large cc-onboarding-next">
+                            Get Started →
+                        </button>
+                        <button class="button button-link cc-onboarding-skip">Skip Tutorial</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Quick Start Options -->
+                <div id="cc-onboarding-step-2" class="cc-onboarding-step" data-step="2" style="display: none;">
+                    <div class="cc-onboarding-header">
+                        <div class="cc-onboarding-icon">🚀</div>
+                        <h2>Choose Your Quick Start</h2>
+                        <p>Pick a demo to see CardCrafter in action, then customize it for your needs.</p>
+                    </div>
+                    <div class="cc-onboarding-content">
+                        <div class="cc-demo-options">
+                            <div class="cc-demo-option" data-demo="team">
+                                <div class="cc-demo-preview">
+                                    <div class="cc-demo-icon">👥</div>
+                                    <h3>Team Directory</h3>
+                                    <p>Display team members with photos, roles, and contact info</p>
+                                    <div class="cc-demo-tags">
+                                        <span class="cc-tag">Popular</span>
+                                        <span class="cc-tag">Business</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cc-demo-option" data-demo="products">
+                                <div class="cc-demo-preview">
+                                    <div class="cc-demo-icon">📦</div>
+                                    <h3>Product Showcase</h3>
+                                    <p>Beautiful product cards with images, prices, and features</p>
+                                    <div class="cc-demo-tags">
+                                        <span class="cc-tag">E-commerce</span>
+                                        <span class="cc-tag">Sales</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cc-demo-option" data-demo="portfolio">
+                                <div class="cc-demo-preview">
+                                    <div class="cc-demo-icon">🎨</div>
+                                    <h3>Portfolio Gallery</h3>
+                                    <p>Showcase creative work with stunning visual layouts</p>
+                                    <div class="cc-demo-tags">
+                                        <span class="cc-tag">Creative</span>
+                                        <span class="cc-tag">Design</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cc-onboarding-actions">
+                        <button class="button button-primary button-large cc-onboarding-create-demo" disabled>
+                            Create My First Cards →
+                        </button>
+                        <button class="button button-link cc-onboarding-back">← Back</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Success Celebration -->
+                <div id="cc-onboarding-step-3" class="cc-onboarding-step" data-step="3" style="display: none;">
+                    <div class="cc-onboarding-header">
+                        <div class="cc-onboarding-icon cc-success-icon">🎊</div>
+                        <h2>Congratulations!</h2>
+                        <p>You've successfully created your first card display! Your cards are ready to use.</p>
+                    </div>
+                    <div class="cc-onboarding-content">
+                        <div class="cc-success-preview" id="cc-success-preview-area">
+                            <!-- Generated cards preview will appear here -->
+                        </div>
+                        <div class="cc-next-steps">
+                            <h3>What's Next?</h3>
+                            <div class="cc-next-step">
+                                <span class="cc-step-icon">📋</span>
+                                <span>Copy the shortcode below to use anywhere on your site</span>
+                            </div>
+                            <div class="cc-next-step">
+                                <span class="cc-step-icon">⚙️</span>
+                                <span>Customize colors, layouts, and styling options</span>
+                            </div>
+                            <div class="cc-next-step">
+                                <span class="cc-step-icon">📊</span>
+                                <span>Connect your own data sources (JSON, WordPress posts, etc.)</span>
+                            </div>
+                        </div>
+                        <div class="cc-shortcode-result">
+                            <label>Your Shortcode (copy this!):</label>
+                            <div class="cc-shortcode-display-success">
+                                <code id="cc-generated-shortcode">[cardcrafter source="demo" layout="grid"]</code>
+                                <button class="button button-secondary cc-copy-success-shortcode">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cc-onboarding-actions">
+                        <button class="button button-primary button-large cc-onboarding-finish">
+                            Start Creating Cards! 🚀
+                        </button>
+                        <button class="button button-link cc-onboarding-explore">Explore Features</button>
+                    </div>
+                </div>
+                
+            </div>
         </div>
+
+        <!-- Onboarding Styles -->
+        <style>
+        .cc-onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cc-onboarding-modal {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 0;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: cc-modal-appear 0.3s ease-out;
+        }
+        
+        @keyframes cc-modal-appear {
+            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .cc-onboarding-header {
+            text-align: center;
+            padding: 40px 40px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .cc-onboarding-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .cc-success-icon {
+            animation: cc-bounce 1s ease-in-out;
+        }
+        
+        @keyframes cc-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .cc-onboarding-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .cc-onboarding-header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .cc-onboarding-content {
+            padding: 30px 40px;
+        }
+        
+        .cc-value-props {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .cc-value-prop {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #374151;
+        }
+        
+        .cc-prop-icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .cc-onboarding-stats {
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        .cc-demo-options {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+        }
+        
+        .cc-demo-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .cc-demo-option:hover {
+            border-color: #3b82f6;
+            background: #f8faff;
+        }
+        
+        .cc-demo-option.selected {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+        
+        .cc-demo-preview h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .cc-demo-preview p {
+            margin: 0 0 12px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .cc-demo-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .cc-demo-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .cc-tag {
+            background: #e5e7eb;
+            color: #6b7280;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .cc-demo-option.selected .cc-tag {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .cc-success-preview {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .cc-next-steps h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #1f2937;
+        }
+        
+        .cc-next-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+        
+        .cc-step-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .cc-shortcode-result {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .cc-shortcode-result label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .cc-shortcode-display-success {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .cc-shortcode-display-success code {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        }
+        
+        .cc-onboarding-actions {
+            padding: 20px 40px 40px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .cc-onboarding-actions .button {
+            margin: 0 8px;
+        }
+        
+        .cc-onboarding-actions .button-primary {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .cc-onboarding-actions .button-link {
+            color: #6b7280;
+            text-decoration: none;
+        }
+        
+        .cc-onboarding-actions .button-link:hover {
+            color: #374151;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .cc-onboarding-modal {
+                width: 95%;
+                margin: 20px;
+            }
+            
+            .cc-onboarding-header,
+            .cc-onboarding-content,
+            .cc-onboarding-actions {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .cc-demo-options {
+                gap: 15px;
+            }
+            
+            .cc-demo-option {
+                padding: 15px;
+            }
+        }
+        
+        /* Show/Hide Logic */
+        .cc-onboarding-step {
+            display: none;
+        }
+        
+        .cc-onboarding-step.active {
+            display: block;
+        }
+        </style>
+
+        <!-- Onboarding JavaScript -->
         <script>
         jQuery(document).ready(function($) {
-            $('#cc-activation-notice').on('click', '.notice-dismiss', function() {
+            // Initialize onboarding
+            var currentStep = <?php echo intval($onboarding_step); ?>;
+            var selectedDemo = '<?php echo esc_js(get_option('cc_preferred_demo_type', 'team')); ?>';
+            
+            // Show onboarding modal immediately for new users
+            if (currentStep === 0 && $('.cc-onboarding-overlay').length) {
+                $('#cc-onboarding-overlay').show();
+                showStep(1);
+            }
+            
+            // Step Navigation
+            $('.cc-onboarding-next').click(function() {
+                var current = getCurrentStep();
+                if (current < 3) {
+                    showStep(current + 1);
+                    updateProgress(current + 1);
+                }
+            });
+            
+            $('.cc-onboarding-back').click(function() {
+                var current = getCurrentStep();
+                if (current > 1) {
+                    showStep(current - 1);
+                    updateProgress(current - 1);
+                }
+            });
+            
+            // Demo Selection
+            $('.cc-demo-option').click(function() {
+                $('.cc-demo-option').removeClass('selected');
+                $(this).addClass('selected');
+                selectedDemo = $(this).data('demo');
+                $('.cc-onboarding-create-demo').prop('disabled', false);
+            });
+            
+            // Pre-select saved demo preference
+            $('.cc-demo-option[data-demo="' + selectedDemo + '"]').addClass('selected');
+            if (selectedDemo) {
+                $('.cc-onboarding-create-demo').prop('disabled', false);
+            }
+            
+            // Create Demo Cards
+            $('.cc-onboarding-create-demo').click(function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('Creating Cards...');
+                
+                // Update the demo URL in the admin interface
+                var demoUrl = '<?php echo CARDCRAFTER_URL; ?>demo-data/' + selectedDemo + '.json';
+                var urlInput = $('#cc-preview-url');
+                if (urlInput.length) {
+                    urlInput.val(demoUrl);
+                    
+                    // Trigger preview to generate cards
+                    var previewBtn = $('#cc-preview-btn');
+                    if (previewBtn.length) {
+                        previewBtn.click();
+                    }
+                }
+                
+                // Save demo preference
+                $.post(ajaxurl, {
+                    action: 'cc_save_onboarding_progress',
+                    step: 2,
+                    demo_type: selectedDemo,
+                    nonce: '<?php echo wp_create_nonce('cc_onboarding_progress'); ?>'
+                });
+                
+                // Show success after brief delay
+                setTimeout(function() {
+                    showStep(3);
+                    updateProgress(3);
+                    celebrateSuccess();
+                }, 1500);
+            });
+            
+            // Finish Onboarding
+            $('.cc-onboarding-finish').click(function() {
+                $('#cc-onboarding-overlay').hide();
+                completeOnboarding();
+            });
+            
+            // Skip Tutorial
+            $('.cc-onboarding-skip').click(function() {
+                if (confirm('Are you sure you want to skip the tutorial? You can always access help from the documentation section.')) {
+                    $('#cc-onboarding-overlay').hide();
+                    completeOnboarding();
+                }
+            });
+            
+            // Copy Shortcode in Success Step
+            $('.cc-copy-success-shortcode').click(function() {
+                var shortcode = $('#cc-generated-shortcode').text();
+                navigator.clipboard.writeText(shortcode).then(function() {
+                    $('.cc-copy-success-shortcode').text('Copied!').css('background', '#22c55e');
+                    setTimeout(function() {
+                        $('.cc-copy-success-shortcode').text('Copy').css('background', '');
+                    }, 2000);
+                });
+            });
+            
+            // Helper Functions
+            function getCurrentStep() {
+                return parseInt($('.cc-onboarding-step:visible').data('step')) || 1;
+            }
+            
+            function showStep(stepNumber) {
+                $('.cc-onboarding-step').hide();
+                $('#cc-onboarding-step-' + stepNumber).show();
+            }
+            
+            function updateProgress(step) {
+                currentStep = step;
+                $.post(ajaxurl, {
+                    action: 'cc_save_onboarding_progress',
+                    step: step,
+                    nonce: '<?php echo wp_create_nonce('cc_onboarding_progress'); ?>'
+                });
+            }
+            
+            function celebrateSuccess() {
+                // Update generated shortcode
+                var demoUrl = '<?php echo CARDCRAFTER_URL; ?>demo-data/' + selectedDemo + '.json';
+                var generatedShortcode = '[cardcrafter source="' + demoUrl + '" layout="grid" columns="3"]';
+                $('#cc-generated-shortcode').text(generatedShortcode);
+                
+                // Add celebration animation
+                $('.cc-success-icon').addClass('animated');
+                
+                // Show preview message
+                $('#cc-success-preview-area').html(
+                    '<div style="color: #16a34a; font-weight: 600;">✅ Your ' + 
+                    selectedDemo.charAt(0).toUpperCase() + selectedDemo.slice(1) + 
+                    ' cards are now live!</div>' +
+                    '<p style="margin-top: 10px; color: #6b7280;">Check the preview below to see your cards in action.</p>'
+                );
+                
+                // Mark first card completion
+                $.post(ajaxurl, {
+                    action: 'cc_complete_first_card',
+                    demo_type: selectedDemo,
+                    nonce: '<?php echo wp_create_nonce('cc_complete_first_card'); ?>'
+                });
+            }
+            
+            function completeOnboarding() {
                 $.post(ajaxurl, {
                     action: 'cc_dismiss_activation_notice',
                     nonce: '<?php echo wp_create_nonce('cc_dismiss_notice'); ?>'
                 });
-            });
+                
+                // Scroll to generated cards if they exist
+                setTimeout(function() {
+                    if ($('.cardcrafter-container').length) {
+                        $('html, body').animate({
+                            scrollTop: $('.cardcrafter-container').offset().top - 100
+                        }, 500);
+                    }
+                }, 500);
+            }
         });
         </script>
         <?php
@@ -1642,6 +2220,68 @@ class CardCrafter
 
         wp_send_json_success(array(
             'message' => 'Subscription successful'
+        ));
+    }
+
+    /**
+     * Save onboarding progress
+     */
+    public function save_onboarding_progress()
+    {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cc_onboarding_progress')) {
+            wp_send_json_error('Security check failed');
+            return;
+        }
+
+        $step = isset($_POST['step']) ? absint($_POST['step']) : 0;
+        $demo_type = isset($_POST['demo_type']) ? sanitize_text_field($_POST['demo_type']) : '';
+
+        // Update onboarding step
+        if ($step > 0) {
+            update_option('cc_onboarding_step', $step);
+        }
+
+        // Save demo preference
+        if (!empty($demo_type)) {
+            update_option('cc_preferred_demo_type', $demo_type);
+        }
+
+        wp_send_json_success(array(
+            'step' => $step,
+            'demo_type' => $demo_type
+        ));
+    }
+
+    /**
+     * Mark first card completion milestone
+     */
+    public function complete_first_card()
+    {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'cc_complete_first_card')) {
+            wp_send_json_error('Security check failed');
+            return;
+        }
+
+        $demo_type = isset($_POST['demo_type']) ? sanitize_text_field($_POST['demo_type']) : '';
+
+        // Mark completion milestone
+        update_option('cc_user_completed_first_card', true);
+        update_option('cc_onboarding_completion_time', current_time('timestamp'));
+        
+        if (!empty($demo_type)) {
+            update_option('cc_first_card_demo_type', $demo_type);
+        }
+
+        // Calculate time to first success
+        $start_time = get_option('cc_onboarding_start_time', 0);
+        $time_to_value = current_time('timestamp') - $start_time;
+
+        wp_send_json_success(array(
+            'completed' => true,
+            'demo_type' => $demo_type,
+            'time_to_value_minutes' => round($time_to_value / 60, 1)
         ));
     }
 }
