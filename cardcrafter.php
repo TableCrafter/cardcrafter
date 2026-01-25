@@ -3,7 +3,7 @@
  * Plugin Name: CardCrafter – Data-Driven Card Grids
  * Plugin URI: https://github.com/TableCrafter/cardcrafter-data-grids
  * Description: Transform JSON data and WordPress posts into beautiful card grids. Perfect for teams, products, portfolios, and blogs.
- * Version: 1.13.0
+ * Version: 1.13.1
  * Author: fahdi
  * Author URI: https://github.com/TableCrafter
  * License: GPLv2 or later
@@ -20,7 +20,7 @@ Note: Plugin name and slug updated to CardCrafter – Data-Driven Card Grids / c
 All functional code remains unchanged. These changes are recommended by an AI and do not replace WordPress.org volunteer review guidance.
 */
 
-define('CARDCRAFTER_VERSION', '1.13.0');
+define('CARDCRAFTER_VERSION', '1.13.1');
 define('CARDCRAFTER_URL', plugin_dir_url(__FILE__));
 define('CARDCRAFTER_PATH', plugin_dir_path(__FILE__));
 
@@ -1170,17 +1170,32 @@ class CardCrafter
     }
 
     /**
-     * Render WordPress native data as cards
+     * Render WordPress native data as cards with optimized performance
      */
     public function render_wordpress_data($atts)
     {
-        // Build WP_Query arguments
+        // Performance optimization: Check cache first
+        $cache_key = $this->generate_wp_query_cache_key($atts);
+        $cached_result = get_transient($cache_key);
+        
+        if ($cached_result !== false && !$this->is_debug_mode()) {
+            return $cached_result;
+        }
+
+        $performance_start = microtime(true);
+        
+        // Build optimized WP_Query arguments
         $query_args = array(
             'post_type' => $atts['post_type'],
             'posts_per_page' => $atts['posts_per_page'],
             'post_status' => 'publish',
             'meta_query' => array(),
-            'tax_query' => array()
+            'tax_query' => array(),
+            // Performance optimizations
+            'no_found_rows' => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+            'cache_results' => false  // We handle our own caching
         );
 
         // Parse custom wp_query string (e.g., "category=news&author=5")
@@ -1189,30 +1204,45 @@ class CardCrafter
             $query_args = array_merge($query_args, $custom_args);
         }
 
-        // Execute WordPress query
-        $posts = get_posts($query_args);
+        // Use WP_Query for better control over performance
+        $wp_query = new WP_Query($query_args);
+        $posts = $wp_query->posts;
         
         if (empty($posts)) {
-            return '<div class="cardcrafter-no-results"><p>No WordPress posts found matching your criteria.</p></div>';
+            $result = '<div class="cardcrafter-no-results"><p>No WordPress posts found matching your criteria.</p></div>';
+            // Cache empty results for shorter time
+            set_transient($cache_key, $result, 5 * MINUTE_IN_SECONDS);
+            return $result;
         }
 
-        // Convert WordPress posts to CardCrafter data format
+        // Batch-load all required data to reduce database calls
+        $post_ids = wp_list_pluck($posts, 'ID');
+        
+        // Batch-load featured images
+        $featured_images = $this->batch_load_featured_images($post_ids);
+        
+        // Batch-load author data
+        $author_ids = array_unique(wp_list_pluck($posts, 'post_author'));
+        $authors_data = $this->batch_load_authors_data($author_ids);
+
+        // Convert WordPress posts to CardCrafter data format (optimized)
         $card_data = array();
         foreach ($posts as $post) {
-            $featured_image = get_the_post_thumbnail_url($post->ID, 'medium');
+            $featured_image = $featured_images[$post->ID] ?? '';
+            $author_data = $authors_data[$post->post_author] ?? '';
             
             $card_item = array(
                 'id' => $post->ID,
-                'title' => get_the_title($post->ID),
-                'subtitle' => get_the_date('F j, Y', $post->ID),
-                'description' => wp_trim_words(get_the_excerpt($post->ID), 20, '...'),
+                'title' => $post->post_title,
+                'subtitle' => get_the_date('F j, Y', $post),
+                'description' => $this->get_optimized_excerpt($post),
                 'link' => get_permalink($post->ID),
-                'image' => $featured_image ?: $this->get_placeholder_image(get_the_title($post->ID)),
+                'image' => $featured_image ?: $this->get_placeholder_image($post->post_title),
                 'post_type' => $post->post_type,
-                'author' => get_the_author_meta('display_name', $post->post_author)
+                'author' => $author_data
             );
 
-            // Add custom fields support (ACF integration with fallback)
+            // Add custom fields support (ACF integration with fallback) - optimized
             if (function_exists('get_fields')) {
                 $custom_fields = get_fields($post->ID);
                 if ($custom_fields && is_array($custom_fields)) {
@@ -1223,9 +1253,8 @@ class CardCrafter
             $card_data[] = $card_item;
         }
 
-        // Convert to JSON for JavaScript
-        $json_data = wp_json_encode($card_data);
-        $wp_data_mode = true;
+        // Clean up query object
+        wp_reset_postdata();
 
         // Enqueue assets
         wp_enqueue_script('cardcrafter-lib');
@@ -1292,7 +1321,242 @@ class CardCrafter
         });
         </script>
         <?php
-        return ob_get_clean();
+        $result = ob_get_clean();
+        
+        // Performance tracking and caching
+        $performance_end = microtime(true);
+        $execution_time = ($performance_end - $performance_start) * 1000; // Convert to milliseconds
+        
+        // Log performance if enabled
+        if ($this->is_debug_mode()) {
+            error_log(sprintf(
+                'CardCrafter WordPress Query Performance: %dms for %d %s posts (Cache: %s)',
+                round($execution_time),
+                count($card_data),
+                $atts['post_type'],
+                $cached_result !== false ? 'HIT' : 'MISS'
+            ));
+        }
+        
+        // Cache the result for future requests (smart cache duration based on post type)
+        $cache_duration = $this->get_cache_duration($atts['post_type']);
+        set_transient($cache_key, $result, $cache_duration);
+        
+        // Hook for cache invalidation when posts are updated
+        $this->register_cache_invalidation_hooks($cache_key, $atts['post_type']);
+        
+        return $result;
+    }
+
+    /**
+     * Generate cache key for WordPress query
+     * 
+     * @param array $atts Shortcode attributes
+     * @return string Cache key
+     */
+    private function generate_wp_query_cache_key($atts)
+    {
+        $key_parts = array(
+            'cardcrafter_wp_query',
+            md5(serialize($atts)),
+            get_current_blog_id(),
+            get_locale()
+        );
+        return implode('_', $key_parts);
+    }
+
+    /**
+     * Check if debug mode is enabled
+     * 
+     * @return bool True if debug mode is enabled
+     */
+    private function is_debug_mode()
+    {
+        return defined('WP_DEBUG') && WP_DEBUG && (defined('CARDCRAFTER_DEBUG') && CARDCRAFTER_DEBUG);
+    }
+
+    /**
+     * Batch-load featured images for multiple posts to reduce database calls
+     * 
+     * @param array $post_ids Array of post IDs
+     * @return array Associative array of post_id => image_url
+     */
+    private function batch_load_featured_images($post_ids)
+    {
+        if (empty($post_ids)) {
+            return array();
+        }
+
+        $images = array();
+        
+        // Get all thumbnail IDs in one query
+        $thumbnail_ids = get_post_meta(null, '_thumbnail_id', false);
+        $thumbnail_map = array();
+        
+        foreach ($thumbnail_ids as $meta_id => $thumbnail_id) {
+            $post_id = get_metadata_by_mid('post', $meta_id);
+            if ($post_id && in_array($post_id->object_id, $post_ids)) {
+                $thumbnail_map[$post_id->object_id] = $thumbnail_id;
+            }
+        }
+
+        // Batch-generate image URLs
+        foreach ($post_ids as $post_id) {
+            if (isset($thumbnail_map[$post_id])) {
+                $image_url = wp_get_attachment_image_url($thumbnail_map[$post_id], 'medium');
+                $images[$post_id] = $image_url ?: '';
+            } else {
+                $images[$post_id] = '';
+            }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Batch-load author data for multiple author IDs to reduce database calls
+     * 
+     * @param array $author_ids Array of author IDs
+     * @return array Associative array of author_id => display_name
+     */
+    private function batch_load_authors_data($author_ids)
+    {
+        if (empty($author_ids)) {
+            return array();
+        }
+
+        $authors_data = array();
+        
+        // Use get_users with include parameter for efficient batch loading
+        $users = get_users(array(
+            'include' => $author_ids,
+            'fields' => array('ID', 'display_name')
+        ));
+
+        foreach ($users as $user) {
+            $authors_data[$user->ID] = $user->display_name;
+        }
+
+        return $authors_data;
+    }
+
+    /**
+     * Get optimized excerpt for a post without triggering additional queries
+     * 
+     * @param WP_Post $post Post object
+     * @return string Optimized excerpt
+     */
+    private function get_optimized_excerpt($post)
+    {
+        if (!empty($post->post_excerpt)) {
+            return wp_trim_words($post->post_excerpt, 20, '...');
+        }
+        
+        // Generate excerpt from content if no explicit excerpt
+        $content = strip_shortcodes($post->post_content);
+        $content = wp_strip_all_tags($content);
+        return wp_trim_words($content, 20, '...');
+    }
+
+    /**
+     * Get cache duration based on post type
+     * 
+     * @param string $post_type Post type
+     * @return int Cache duration in seconds
+     */
+    private function get_cache_duration($post_type)
+    {
+        // Different cache durations for different post types
+        $durations = array(
+            'post' => 15 * MINUTE_IN_SECONDS,      // Blog posts change frequently
+            'page' => 2 * HOUR_IN_SECONDS,         // Pages change less frequently  
+            'product' => 30 * MINUTE_IN_SECONDS,   // Products change moderately
+            'attachment' => 4 * HOUR_IN_SECONDS    // Media rarely changes
+        );
+
+        return $durations[$post_type] ?? HOUR_IN_SECONDS; // Default 1 hour
+    }
+
+    /**
+     * Register cache invalidation hooks for specific post type
+     * 
+     * @param string $cache_key Cache key to invalidate
+     * @param string $post_type Post type to watch for changes
+     */
+    private function register_cache_invalidation_hooks($cache_key, $post_type)
+    {
+        // Store cache keys that need invalidation
+        $cache_keys = get_option('cardcrafter_cache_keys', array());
+        $cache_keys[$post_type][] = $cache_key;
+        update_option('cardcrafter_cache_keys', $cache_keys);
+
+        // Add hooks for cache invalidation (only if not already added)
+        if (!has_action('save_post', array($this, 'invalidate_post_cache'))) {
+            add_action('save_post', array($this, 'invalidate_post_cache'), 10, 2);
+            add_action('delete_post', array($this, 'invalidate_post_cache'), 10, 2);
+            add_action('wp_trash_post', array($this, 'invalidate_post_cache'), 10, 1);
+            add_action('untrash_post', array($this, 'invalidate_post_cache'), 10, 1);
+        }
+    }
+
+    /**
+     * Invalidate post caches when posts are modified
+     * 
+     * @param int $post_id Post ID
+     * @param WP_Post|null $post Post object (optional)
+     */
+    public function invalidate_post_cache($post_id, $post = null)
+    {
+        if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+            return;
+        }
+
+        $post = $post ?: get_post($post_id);
+        if (!$post) {
+            return;
+        }
+
+        $cache_keys = get_option('cardcrafter_cache_keys', array());
+        
+        // Invalidate caches for this post type
+        if (isset($cache_keys[$post->post_type])) {
+            foreach ($cache_keys[$post->post_type] as $cache_key) {
+                delete_transient($cache_key);
+            }
+            
+            // Clean up expired cache keys
+            unset($cache_keys[$post->post_type]);
+            update_option('cardcrafter_cache_keys', $cache_keys);
+        }
+
+        // Also invalidate general WordPress query caches that might include this post
+        $this->cleanup_expired_caches();
+    }
+
+    /**
+     * Cleanup expired transient caches to prevent database bloat
+     */
+    private function cleanup_expired_caches()
+    {
+        global $wpdb;
+        
+        // Clean up expired transients related to CardCrafter (runs max once per hour)
+        $cleanup_key = 'cardcrafter_cache_cleanup_last_run';
+        $last_cleanup = get_transient($cleanup_key);
+        
+        if ($last_cleanup === false) {
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} 
+                     WHERE option_name LIKE %s 
+                     AND option_name LIKE %s",
+                    '%cardcrafter_wp_query%',
+                    '%transient_timeout_%'
+                )
+            );
+            
+            set_transient($cleanup_key, time(), HOUR_IN_SECONDS);
+        }
     }
 
     /**
